@@ -35,6 +35,96 @@ class LibraryApi extends WebApi{
       throw Exception();
     }
   }
+
+  Future<void> deleteLibrary({required int libraryId}) async {
+    final response = await postRequest(
+        uri: buildUri('library/delete'),
+        headers: await buildHeaderWithAuth(),
+        body: jsonEncode({
+          'libraryID': libraryId
+        })
+    );
+    if(response.statusCode == 200){
+      return;
+    }else{
+      throw Exception();
+    }
+  }
+
+  Future<void> modifyLibrary({required int libraryId, required String name}) async {
+    final response = await postRequest(
+      uri: buildUri('library/modify'),
+      headers: await buildHeaderWithAuth(),
+      body: jsonEncode({
+        'libraryID': libraryId,
+        'name':name
+      })
+    );
+    if(response.statusCode == 200){
+      return;
+    }else{
+      throw Exception();
+    }
+  }
+
+  Future<void> createCollection({
+    required int libraryId,
+    required int parentCollectionId,
+    required String name,
+    required String description
+  }) async {
+    final response = await postRequest(
+      uri: buildUri('collection/create'),
+      headers: await buildHeaderWithAuth(),
+      body: jsonEncode({
+        'libraryID': libraryId,
+        'parentCollectionID': parentCollectionId,
+        'name': name,
+        'description': description
+      })
+    );
+    if(response.statusCode == 200){
+      return;
+    }else{
+      throw Exception();
+    }
+  }
+
+  Future<void> modifyCollection({
+    required int collectionId,
+    required String name,
+    required String description
+  }) async {
+    final response = await postRequest(
+      uri: buildUri('collection/modify'),
+      headers: await buildHeaderWithAuth(),
+      body: jsonEncode({
+        'collectionId': collectionId,
+        'name': name,
+        'description': description
+      })
+    );
+    if(response.statusCode == 200){
+      return;
+    }else{
+      throw Exception();
+    }
+  }
+
+  Future<void> deleteCollection({required int collectionId}) async {
+    final response = await postRequest(
+      uri: buildUri('collection/delete'),
+      headers: await buildHeaderWithAuth(),
+      body: jsonEncode({
+        'collectionID', collectionId
+      })
+    );
+    if(response.statusCode == 200){
+      return;
+    }else{
+      throw Exception();
+    }
+  }
   
   Future<List<Collection>> getCollections(int libraryId) async {
     final response = await getRequest(

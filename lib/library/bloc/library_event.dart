@@ -10,3 +10,22 @@ abstract class LibraryEvent extends Equatable {
 class LoadLibrariesEvent extends LibraryEvent {
   const LoadLibrariesEvent();
 }
+
+class LibraryDeletedEvent extends LibraryEvent {
+  const LibraryDeletedEvent(this.libraryId);
+
+  final int libraryId;
+
+  @override
+  List<Object> get props => [libraryId];
+}
+
+class LibraryModifiedEvent extends LibraryEvent {
+  const LibraryModifiedEvent(this.libraryId, this.name);
+
+  final int libraryId;
+  final String name;
+
+  @override
+  List<Object> get props => [libraryId, name];
+}

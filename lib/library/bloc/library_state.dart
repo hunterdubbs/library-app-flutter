@@ -1,15 +1,17 @@
 part of 'library_bloc.dart';
 
-enum LibraryStatus { initial, loading, loaded, errorLoading }
+enum LibraryStatus { initial, loading, loaded, errorLoading, modifying, modified }
 
 class LibraryState extends Equatable {
   const LibraryState._({
     this.libraries = const <Library>[],
-    this.status = LibraryStatus.initial
+    this.status = LibraryStatus.initial,
+    this.errorMsg = ''
   });
 
   final List<Library> libraries;
   final LibraryStatus status;
+  final String errorMsg;
 
   const LibraryState.initial() : this._();
 
@@ -21,15 +23,17 @@ class LibraryState extends Equatable {
 
   LibraryState copyWith({
   List<Library>? libraries,
-    LibraryStatus? status
+    LibraryStatus? status,
+    String? errorMsg
 }) {
     return LibraryState._(
       libraries: libraries ?? this.libraries,
-      status: status ?? this.status
+      status: status ?? this.status,
+      errorMsg: errorMsg ?? this.errorMsg
     );
   }
 
   @override
-  List<Object> get props => [libraries, status];
+  List<Object> get props => [libraries, status, errorMsg];
 }
 

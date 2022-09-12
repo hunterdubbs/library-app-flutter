@@ -10,3 +10,12 @@ abstract class CollectionsEvent extends Equatable {
 class LoadCollectionsEvent extends CollectionsEvent {
   const LoadCollectionsEvent();
 }
+
+class CollectionDeletedEvent extends CollectionsEvent {
+  const CollectionDeletedEvent(this.collectionId);
+
+  final int collectionId;
+
+  @override
+  List<Object> get props => [collectionId];
+}

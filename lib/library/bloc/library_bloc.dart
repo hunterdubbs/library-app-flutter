@@ -14,6 +14,8 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
       : _libraryApi = libraryApi,
         super(const LibraryState.initial()) {
     on<LoadLibrariesEvent>(_loadLibraries);
+    on<LibraryDeletedEvent>(_deleteLibrary);
+    on<LibraryModifiedEvent>(_modifyLibrary);
   }
 
   final LibraryApi _libraryApi;
@@ -28,6 +30,34 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
     }
     catch (_) {
       emit(const LibraryState.errorLoading());
+    }
+  }
+
+  void _deleteLibrary(
+      LibraryDeletedEvent event,
+      Emitter<LibraryState> emit
+      ) async {
+    emit(state.copyWith(status: LibraryStatus.modifying));
+
+    try{
+      await _libraryApi.deleteLibrary(libraryId: event.libraryId);
+      emit(state.copyWith(status: LibraryStatus.modified));
+    }catch(_){
+      emit(state.copyWith(status: LibraryStatus.loaded, errorMsg: 'Error deleting library'));
+    }
+  }
+
+  void _modifyLibrary(
+      LibraryModifiedEvent event,
+      Emitter<LibraryState> emit
+      ) async {
+    emit(state.copyWith(status: LibraryStatus.modifying));
+
+    try{
+      await _libraryApi.modifyLibrary(libraryId: event.libraryId, name: event.name);
+      emit(state.copyWith(status: LibraryStatus.modified));
+    }catch(_){
+      emit(state.copyWith(status: LibraryStatus.loaded, errorMsg: 'Error modifying library'));
     }
   }
 }
