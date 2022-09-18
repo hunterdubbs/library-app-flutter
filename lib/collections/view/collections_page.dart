@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:library_app/books/view/books_page.dart';
 import 'package:library_app/collection_add/view/collection_add_page.dart';
 import 'package:library_app/collections/bloc/collections_bloc.dart';
 import 'package:library_app/data/library_api.dart';
@@ -109,11 +110,14 @@ class CollectionsPage extends StatelessWidget {
                                     content: const Text('Are you sure you want to delete this collection?'),
                                     actions: [
                                       TextButton(
-                                        onPressed: () => Navigator.of(context).pop(),
+                                        onPressed: () => Navigator.of(context).pop(false),
                                         child: const Text('Cancel'),
                                       ),
                                       TextButton(
-                                        onPressed: () => Navigator.of(context).pop(),
+                                        onPressed: () {
+                                          context.read<CollectionsBloc>().add(CollectionDeletedEvent(collection.id));
+                                          Navigator.of(context).pop(true);
+                                        },
                                         child: const Text('Delete')
                                       )
                                     ],
@@ -124,6 +128,9 @@ class CollectionsPage extends StatelessWidget {
                               }
                             });
                           },
+                        onTap: (){
+                            Navigator.of(context).push(BooksPage.route(library: state.library, collection: collection));
+                        },
                       )
                   ],
                 ),

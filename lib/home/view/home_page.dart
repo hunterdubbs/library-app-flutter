@@ -18,27 +18,31 @@ class HomePage extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Builder(
-              builder: (context) {
-                final userId = context.select(
-                    (AuthenticationBloc bloc) => bloc.state.status
-                );
-                return Text('UserID: $userId');
-              }
-            ),
+            const Padding(padding: EdgeInsets.symmetric(vertical: 12)),
             ElevatedButton(
-              child: const Text('Libraries'),
               onPressed: () {
                 Navigator.of(context).push(LibraryPage.route());
               },
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
+              ),
+              child: const Text('Libraries', style: TextStyle(
+                fontSize: 18,
+              ),),
             ),
+            const Padding(padding: EdgeInsets.symmetric(vertical: 12)),
             ElevatedButton(
-              child: const Text('Logout'),
               onPressed: (){
                 context
                   .read<AuthenticationBloc>()
                     .add(AuthenticationLogoutRequested());
               },
+              style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
+              ),
+              child: const Text('Logout', style: TextStyle(
+                fontSize: 18,
+              ),),
             )
           ],
         )

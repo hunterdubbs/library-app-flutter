@@ -139,6 +139,20 @@ class LibraryApi extends WebApi{
       throw Exception();
     }
   }
+
+  Future<List<Book>> getBooksByCollection(int collectionId) async {
+    final response = await getRequest(
+      uri: buildUri('book/collection/$collectionId'),
+      headers: await buildHeaderWithAuth()
+    );
+    if(response.statusCode == 200){
+      final List<dynamic> json = jsonDecode(response.body);
+      List<Book> bookList = List<Book>.from(json.map((i) => Book.fromJson(i)));
+      return bookList;
+    }else{
+      throw Exception();
+    }
+  }
 }
 
 class LibraryNotFoundException implements Exception {}
