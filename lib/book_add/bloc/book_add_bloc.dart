@@ -1,0 +1,79 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:formz/formz.dart';
+import 'package:library_app/book_add/models/models.dart';
+import 'package:library_app/data/library_api.dart';
+import 'package:library_app/data/models/models.dart';
+
+part 'book_add_event.dart';
+part 'book_add_state.dart';
+
+class BookAddBloc extends Bloc<BookAddEvent, BookAddState> {
+  BookAddBloc({
+    required LibraryApi libraryApi,
+    required int libraryId,
+    required int collectionId,
+    Book? book
+  }) : _libraryApi = libraryApi,
+    super(BookAddState.initial(libraryID: libraryId, collectionID: collectionId, book: book)) {
+      on<TitleChanged>(_onTitleChanged);
+      on<SynopsisChanged>(_onSynopsisChanged);
+      on<DatePublishedChanged>(_onDatePublishedChanged);
+      on<Submitted>(_onSubmitted);
+  }
+
+  final LibraryApi _libraryApi;
+
+  void _onTitleChanged(
+      TitleChanged event,
+      Emitter<BookAddState> emit
+      ) {
+    final title = Title.dirty(event.title);
+    emit(state.copyWith(
+      title: title,
+      status: Formz.validate([title, state.synopsis, state.datePublished])
+    ));
+  }
+
+  void _onSynopsisChanged(
+      SynopsisChanged event,
+      Emitter<BookAddState> emit
+      ) {
+    final synopsis = Synopsis.dirty(event.synopsis);
+    emit(state.copyWith(
+      synopsis: synopsis,
+      status: Formz.validate([synopsis, state.title, state.datePublished])
+    ));
+  }
+
+  void _onDatePublishedChanged(
+      DatePublishedChanged event,
+      Emitter<BookAddState> emit
+      ) {
+    final datePublished = DatePublished.dirty(event.datePublished);
+    emit(state.copyWith(
+      datePublished: datePublished,
+      status: Formz.validate([datePublished, state.title, state.synopsis])
+    ));
+  }
+
+  void _onSubmitted(
+      Submitted event,
+      Emitter<BookAddState> emit
+      ) async {
+    if(state.status.isValidated){
+      emit(state.copyWith(status: FormzStatus.submissionInProgress));
+      try{
+        if(state.isEdit){
+          await _libraryApi.modifyBook(libraryId: state.libraryId, bookId: state.bookId, title: state.title.value, synopsis: state.synopsis.value, datePublished: state.datePublished.value, authors: state.authors);
+        }else{
+          await _libraryApi.createBookInCollection(libraryId: state.libraryId, collectionId: state.collectionId, title: state.title.value, synopsis: state.synopsis.value, datePublished: state.datePublished.value, authors: state.authors);
+        }
+        emit(state.copyWith(status: FormzStatus.submissionSuccess));
+      }
+      catch(_){
+        emit(state.copyWith(status: FormzStatus.submissionFailure));
+      }
+    }
+  }
+}

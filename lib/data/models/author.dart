@@ -22,6 +22,11 @@ class Author extends Equatable {
     'LastName': lastName
   };
 
+  @override
+  String toString() {
+    return '$firstName $lastName';
+  }
+
   String get displayName => '$firstName $lastName';
 
   @override

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:library_app/book_details/view/book_details_page.dart';
 import 'package:library_app/books/bloc/books_bloc.dart';
 import 'package:library_app/data/library_api.dart';
 import 'package:library_app/data/models/models.dart';
@@ -81,17 +82,20 @@ class BooksPage extends StatelessWidget {
             if(state.books.isEmpty) {
               return const Center(child: Text('You currently don\'t have any books in this collection'));
             }
-            return RefreshIndicator(
-              onRefresh: () async {
-                context.read<BooksBloc>().add(const LoadBooksEvent());
-              },
-              child: CupertinoScrollbar(
+            return CupertinoScrollbar(
+              child: RefreshIndicator(
+                  onRefresh: () async {
+                    context.read<BooksBloc>().add(const LoadBooksEvent());
+                  },
                 child: ListView(
                   children: [
                     for(final book in state.books)
                       BookTile(
                         library: state.library,
                         book: book,
+                        onTap: () {
+                          Navigator.of(context).push(BookDetailsPage.route(book: book, library: state.library));
+                        },
                       )
                   ],
                 )

@@ -153,6 +153,60 @@ class LibraryApi extends WebApi{
       throw Exception();
     }
   }
+
+  Future<void> createBookInCollection({
+    required int libraryId,
+    required int collectionId,
+    required String title,
+    required String synopsis,
+    required DateTime datePublished,
+    required List<Author> authors
+  }) async {
+    final response = await postRequest(
+      uri: buildUri('book/create'),
+      headers: await buildHeaderWithAuth(),
+      body: jsonEncode({
+        'title': title,
+        'synopsis': synopsis,
+        'libraryID': libraryId,
+        'datePublished': datePublished,
+        'collectionID': collectionId,
+        'authors': authors.map((i) => i.toJson()).toList()
+      })
+    );
+    if(response.statusCode == 200){
+      return;
+    }else{
+      throw Exception();
+    }
+  }
+
+  Future<void> modifyBook({
+    required int libraryId,
+    required int bookId,
+    required String title,
+    required String synopsis,
+    required DateTime datePublished,
+    required List<Author> authors
+  }) async {
+    final response = await postRequest(
+      uri: buildUri('book/modify'),
+      headers: await buildHeaderWithAuth(),
+      body: jsonEncode({
+        'bookId': bookId,
+        'title': title,
+        'synopsis': synopsis,
+        'libraryID': libraryId,
+        'datePublished': datePublished,
+        'authors': authors.map((i) => i.toJson()).toList()
+      })
+    );
+    if(response.statusCode == 200){
+      return;
+    }else{
+      throw Exception();
+    }
+  }
 }
 
 class LibraryNotFoundException implements Exception {}

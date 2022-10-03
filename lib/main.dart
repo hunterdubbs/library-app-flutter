@@ -9,6 +9,7 @@ import 'app.dart';
 void main() {
   final AuthRepository authRepository = AuthRepository(const FlutterSecureStorage());
   const String host = 'localhost';
+  //const String host = '10.0.2.2';
   const int port = 44361;
   runApp(App(
     authRepository: authRepository,
