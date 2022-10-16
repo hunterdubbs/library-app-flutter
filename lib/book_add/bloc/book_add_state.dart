@@ -10,7 +10,8 @@ class BookAddState extends Equatable {
     this.title = const Title.pure(),
     this.synopsis = const Synopsis.pure(),
     required this.datePublished,
-    required this.authors
+    required this.authors,
+    this.rev = 0
   });
 
   final FormzStatus status;
@@ -22,6 +23,7 @@ class BookAddState extends Equatable {
   final Synopsis synopsis;
   final DatePublished datePublished;
   final List<Author> authors;
+  final int rev;
 
   static BookAddState initial({
     Book? book,
@@ -65,10 +67,11 @@ class BookAddState extends Equatable {
       title: title ?? this.title,
       synopsis: synopsis ?? this.synopsis,
       datePublished: datePublished ?? this.datePublished,
-      authors: authors ?? this.authors
+      authors: authors ?? this.authors,
+      rev: rev + 1
     );
   }
 
   @override
-  List<Object> get props => [status, libraryId, collectionId, bookId, isEdit, title, synopsis, datePublished, authors];
+  List<Object> get props => [status, libraryId, collectionId, bookId, isEdit, title, synopsis, datePublished, authors, rev];
 }

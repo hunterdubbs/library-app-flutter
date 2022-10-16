@@ -1,9 +1,8 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:intl/intl.dart';
+import 'package:library_app/author_search/view/author_search_page.dart';
 import 'package:library_app/book_add/bloc/book_add_bloc.dart';
 import 'package:library_app/book_add/models/models.dart';
 import 'package:library_app/data/library_api.dart';
@@ -214,7 +213,7 @@ class _AuthorsInput extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<BookAddBloc, BookAddState>(
-      buildWhen: (previous, current) => previous.authors != current.authors,
+      buildWhen: (previous, current) => previous.authors != current.authors || previous.rev != current.rev,
       builder: (context, state) {
         return InputDecorator(
           decoration: const InputDecoration(
@@ -226,7 +225,7 @@ class _AuthorsInput extends StatelessWidget{
                 AuthorListTile(
                   author: author,
                   onDelete: (){
-
+                    context.read<BookAddBloc>().add(AuthorRemoved(author.id));
                   }
                 ),
               Card(
@@ -240,7 +239,9 @@ class _AuthorsInput extends StatelessWidget{
                       child: TextButton(
                         child: const Text('Add Author'),
                         onPressed: () {
-
+                          Navigator.of(context).push<Author?>(AuthorSearchPage.route()).then((author) {
+                            if(author != null) context.read<BookAddBloc>().add(AuthorAdded(author));
+                          });
                         },
                       )
                     ),

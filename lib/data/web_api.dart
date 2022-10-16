@@ -23,6 +23,15 @@ class WebApi {
         path: '/api/$path'
   );
 
+  buildUriWithQueryParams(String path, Map<String, String> params) =>
+    Uri(
+      scheme: 'https',
+      host: _host,
+      port: _port,
+      path: '/api/$path',
+      queryParameters: params
+    );
+
   buildHeaderNoAuth() =>
       {
         'Accept': 'application/json',

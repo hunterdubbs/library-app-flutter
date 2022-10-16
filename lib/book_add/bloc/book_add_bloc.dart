@@ -20,6 +20,8 @@ class BookAddBloc extends Bloc<BookAddEvent, BookAddState> {
       on<SynopsisChanged>(_onSynopsisChanged);
       on<DatePublishedChanged>(_onDatePublishedChanged);
       on<Submitted>(_onSubmitted);
+      on<AuthorAdded>(_onAuthorAdded);
+      on<AuthorRemoved>(_onAuthorRemoved);
   }
 
   final LibraryApi _libraryApi;
@@ -75,5 +77,23 @@ class BookAddBloc extends Bloc<BookAddEvent, BookAddState> {
         emit(state.copyWith(status: FormzStatus.submissionFailure));
       }
     }
+  }
+
+  void _onAuthorAdded(
+      AuthorAdded event,
+      Emitter<BookAddState> emit
+      ) {
+    if(!state.authors.any((a) => a.id == event.author.id)){
+      state.authors.add(event.author);
+      emit(state.copyWith(authors: state.authors));
+    }
+  }
+
+  void _onAuthorRemoved(
+      AuthorRemoved event,
+      Emitter<BookAddState> emit
+      ) {
+    state.authors.removeWhere((a) => a.id == event.authorId);
+    emit(state.copyWith(authors: state.authors));
   }
 }

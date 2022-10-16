@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
-import 'package:library_app/data/models/collection_membership.dart';
 import 'package:library_app/data/models/models.dart';
 import 'package:library_app/data/web_api.dart';
 import 'package:library_app/repositories/auth_repository.dart';
@@ -252,6 +250,43 @@ class LibraryApi extends WebApi{
     );
     if(response.statusCode == 200){
       return;
+    }else{
+      throw Exception();
+    }
+  }
+  
+  Future<List<Author>> searchAuthors({required String searchTerm}) async {
+    final response = await getRequest(
+      uri: buildUriWithQueryParams('author/search', {
+        'searchTerm': searchTerm
+      }),
+      headers: await buildHeaderWithAuth(),
+    );
+    if(response.statusCode == 200){
+      final List<dynamic> json = jsonDecode(response.body);
+      List<Author> authors = List<Author>.from(json.map((i) => Author.fromJson(i)));
+      return authors;
+    }else{
+      throw Exception();
+    }
+  }
+
+  Future<Author> createAuthor({
+    required String firstName,
+    required String lastName
+  }) async {
+    final response = await postRequest(
+      uri: buildUri('author/create'),
+      headers: await buildHeaderWithAuth(),
+      body: jsonEncode({
+        'firstName': firstName,
+        'lastName': lastName
+      })
+    );
+    if(response.statusCode == 200){
+      final json = jsonDecode(response.body);
+      Author author = Author.fromJson(json);
+      return author;
     }else{
       throw Exception();
     }
