@@ -115,7 +115,6 @@ class CollectionsPage extends StatelessWidget {
                                       ),
                                       TextButton(
                                         onPressed: () {
-                                          context.read<CollectionsBloc>().add(CollectionDeletedEvent(collection.id));
                                           Navigator.of(context).pop(true);
                                         },
                                         child: const Text('Delete')

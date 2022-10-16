@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:library_app/book_add/view/book_add_page.dart';
+import 'package:library_app/book_collections/view/book_collections_page.dart';
 import 'package:library_app/book_details/view/book_details_page.dart';
 import 'package:library_app/books/bloc/books_bloc.dart';
 import 'package:library_app/data/library_api.dart';
@@ -34,11 +36,11 @@ class BooksPage extends StatelessWidget {
         builder: (context, state) {
           return FloatingActionButton(
             onPressed: () {
-              /*Navigator.of(context).push<bool?>(BookAddPage.route(libraryId: state.library.id, collectionId: state.collection.id)).then((refresh) {
+              Navigator.of(context).push<bool?>(BookAddPage.route(libraryId: state.library.id, collectionId: state.collection.id)).then((refresh) {
                 if(refresh != null && refresh == true){
                   Navigator.of(context).pushReplacement(BooksPage.route(library: state.library, collection: state.collection));
                 }
-              });*/
+              });
             },
             child: const Icon(Icons.add),
           );
@@ -95,6 +97,45 @@ class BooksPage extends StatelessWidget {
                         book: book,
                         onTap: () {
                           Navigator.of(context).push(BookDetailsPage.route(book: book, library: state.library));
+                        },
+                        onEditBook: () {
+                          Navigator.of(context).push<bool?>(BookAddPage.route(
+                              libraryId: state.library.id,
+                              collectionId: state.collection.id,
+                              book: book)).then((refresh) {
+                                if(refresh != null && refresh == true){
+                                  Navigator.of(context).pushReplacement(BooksPage.route(library: state.library, collection: state.collection));
+                                }
+                          });
+                        },
+                        onDeleteBook: (){
+                          showDialog<bool>(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  AlertDialog(
+                                    title: const Text('Delete Book?'),
+                                    content: const Text('Are you sure you want to delete this book?'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () => Navigator.of(context).pop(false),
+                                        child: const Text('Cancel'),
+                                      ),
+                                      TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop(true);
+                                          },
+                                          child: const Text('Delete')
+                                      )
+                                    ],
+                                  )
+                          ).then((confirmed) {
+                            if(confirmed != null && confirmed == true){
+                              context.read<BooksBloc>().add(BookDeletedEvent(book.id));
+                            }
+                          });
+                        },
+                        onEditCollections: (){
+                          Navigator.of(context).push(BookCollectionsPage.route(book: book));
                         },
                       )
                   ],

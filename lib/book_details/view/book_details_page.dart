@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:library_app/book_details/bloc/book_details_bloc.dart';
 import 'package:library_app/data/library_api.dart';
 import 'package:library_app/data/models/models.dart';
@@ -53,8 +54,8 @@ class BookDetailsPage extends StatelessWidget {
                       ),
                     ),
                     const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
-                    Text('Date published ${state.book.publishedDate}', style: metaDataTextStyle),
-                    Text('Date Added to Library ${state.book.addedDate}', style: metaDataTextStyle)
+                    Text('Date Published:  ${DateFormat('MMM dd, yyyy').format(state.book.publishedDate)}', style: metaDataTextStyle),
+                    Text('Date Added to Library:  ${DateFormat('MMM dd, yyyy').format(state.book.addedDate)}', style: metaDataTextStyle)
                   ],
                 ),
               ),

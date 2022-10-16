@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
+import 'package:library_app/data/models/collection_membership.dart';
 import 'package:library_app/data/models/models.dart';
 import 'package:library_app/data/web_api.dart';
 import 'package:library_app/repositories/auth_repository.dart';
@@ -116,7 +118,7 @@ class LibraryApi extends WebApi{
       uri: buildUri('collection/delete'),
       headers: await buildHeaderWithAuth(),
       body: jsonEncode({
-        'collectionID', collectionId
+        'collectionID': collectionId
       })
     );
     if(response.statusCode == 200){
@@ -135,6 +137,36 @@ class LibraryApi extends WebApi{
       final List<dynamic> json = jsonDecode(response.body);
       List<Collection> collectionList = List<Collection>.from(json.map((i) => Collection.fromJson(i)));
       return collectionList;
+    }else{
+      throw Exception();
+    }
+  }
+  
+  Future<List<CollectionMembership>> getCollectionsOfBook(int bookId) async {
+    final response = await getRequest(
+      uri: buildUri('collection/book/list/$bookId'),
+      headers: await buildHeaderWithAuth()
+    );
+    if(response.statusCode == 200){
+      final List<dynamic> json = jsonDecode(response.body);
+      List<CollectionMembership> collectionList = List<CollectionMembership>.from(json.map((i) => CollectionMembership.fromJson(i)));
+      return collectionList;
+    }else{
+      throw Exception();
+    }
+  }
+  
+  Future<void> modifyCollectionsOfBook(int bookId, List<int> collectionIds) async {
+    final response = await postRequest(
+      uri: buildUri('collection/book'),
+      headers: await buildHeaderWithAuth(),
+      body: jsonEncode({
+        'bookID': bookId,
+        'collectionIds': collectionIds
+      })
+    );
+    if(response.statusCode == 200){
+      return;
     }else{
       throw Exception();
     }
@@ -169,7 +201,7 @@ class LibraryApi extends WebApi{
         'title': title,
         'synopsis': synopsis,
         'libraryID': libraryId,
-        'datePublished': datePublished,
+        'datePublished': datePublished.toIso8601String(),
         'collectionID': collectionId,
         'authors': authors.map((i) => i.toJson()).toList()
       })
@@ -197,8 +229,25 @@ class LibraryApi extends WebApi{
         'title': title,
         'synopsis': synopsis,
         'libraryID': libraryId,
-        'datePublished': datePublished,
+        'datePublished': datePublished.toIso8601String(),
         'authors': authors.map((i) => i.toJson()).toList()
+      })
+    );
+    if(response.statusCode == 200){
+      return;
+    }else{
+      throw Exception();
+    }
+  }
+
+  Future<void> deleteBook({
+    required int bookId
+  }) async {
+    final response = await postRequest(
+      uri: buildUri('book/delete'),
+      headers: await buildHeaderWithAuth(),
+      body: jsonEncode({
+        'bookID': bookId
       })
     );
     if(response.statusCode == 200){

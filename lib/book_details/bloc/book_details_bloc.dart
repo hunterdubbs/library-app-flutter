@@ -12,9 +12,7 @@ class BookDetailsBloc extends Bloc<BookDetailsEvent, BookDetailsState> {
     required Book book,
     required Library library
   }) : _libraryApi = libraryApi,
-        super(BookDetailsState(book: book, library: library)) {
-
-  }
+        super(BookDetailsState(book: book, library: library));
 
   final LibraryApi _libraryApi;
 }

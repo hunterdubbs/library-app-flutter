@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:library_app/data/models/models.dart';
 
@@ -7,15 +8,17 @@ class BookTile extends StatelessWidget {
     required this.book,
     required this.library,
     this.onTap,
-    this.onEditCollection,
-    this.onDeleteCollection
+    this.onEditCollections,
+    this.onEditBook,
+    this.onDeleteBook
   }) : super(key: key);
 
   final Library library;
   final Book book;
   final VoidCallback? onTap;
-  final VoidCallback? onEditCollection;
-  final VoidCallback? onDeleteCollection;
+  final VoidCallback? onEditCollections;
+  final VoidCallback? onEditBook;
+  final VoidCallback? onDeleteBook;
 
   @override
   Widget build(BuildContext context) {
@@ -44,13 +47,49 @@ class BookTile extends StatelessWidget {
                                   fontWeight: FontWeight.w500
                               )
                           ),
-                          Text('${book.authors.first.displayName} ${book.authors.length > 1 ? '( +${book.authors.length - 1} more)' : ''}',
+                          if(book.authors.isNotEmpty) Text('${book.authors.first.displayName} ${book.authors.length > 1 ? '( +${book.authors.length - 1} more)' : ''}',
                               style: const TextStyle(
                                   fontSize: 12
                               )
                           ),
                         ],
                       ),
+                    ),
+                  ),
+                  if(library.permissions > 2) SizedBox(
+                    width: 50,
+                    height: 90,
+                    child: IconButton(
+                      icon: const Icon(
+                        CupertinoIcons.eye_fill,
+                        size: 36,
+                        semanticLabel: 'visible collections',
+                      ),
+                      onPressed: onEditCollections,
+                    ),
+                  ),
+                  if(library.permissions > 2) SizedBox(
+                    width: 50,
+                    height: 90,
+                    child: IconButton(
+                      icon: const Icon(
+                        CupertinoIcons.pencil,
+                        size: 36,
+                        semanticLabel: 'edit book',
+                      ),
+                      onPressed: onEditBook,
+                    ),
+                  ),
+                  if(library.permissions > 2) SizedBox(
+                    width: 50,
+                    height: 90,
+                    child: IconButton(
+                      icon: const Icon(
+                        CupertinoIcons.trash_fill,
+                        size: 36,
+                        semanticLabel: 'delete book',
+                      ),
+                      onPressed: onDeleteBook,
                     ),
                   ),
                 ],

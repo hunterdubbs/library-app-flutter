@@ -45,7 +45,7 @@ class CollectionTile extends StatelessWidget {
                                   fontWeight: FontWeight.w500
                               )
                           ),
-                          Text('Owner: ${collection.description}',
+                          Text(collection.description,
                               style: const TextStyle(
                                   fontSize: 12
                               )
