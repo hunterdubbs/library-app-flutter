@@ -44,6 +44,30 @@ class AuthenticationApi extends WebApi {
       throw InvalidCredentialsException();
     }
   }
+  
+  Future<void> register({
+    required String username,
+    required String email,
+    required String password
+  }) async {
+    final response = await postRequest(
+      uri: buildUri('identity/register'),
+      headers: await buildHeaderNoAuth(),
+      body: jsonEncode({
+        'username': username,
+        'email': email,
+        'password': password
+      })
+    );
+
+    if(response.statusCode == 200){
+      return;
+    }else if(response.statusCode == 400){
+      throw RegisterException(response.body);
+    }else{
+      throw Exception();
+    }
+  }
 
   void logOut(){
     clearAuth();
@@ -54,3 +78,9 @@ class AuthenticationApi extends WebApi {
 }
 
 class InvalidCredentialsException implements Exception {}
+
+class RegisterException implements Exception {
+  const RegisterException(this.error);
+
+  final String error;
+}

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:library_app/login/bloc/login_bloc.dart';
+import 'package:library_app/register/view/register_page.dart';
 
 class LoginForm extends StatelessWidget {
   const LoginForm({Key? key}) : super(key: key);
@@ -25,6 +26,8 @@ class LoginForm extends StatelessWidget {
                 _UsernameInput(),
                 const Padding(padding: EdgeInsets.all(12)),
                 _PasswordInput(),
+                const Padding(padding: EdgeInsets.all(12)),
+                _RegisterButton(),
                 const Padding(padding: EdgeInsets.all(12)),
                 _LoginButton()
               ],
@@ -84,15 +87,29 @@ class _LoginButton extends StatelessWidget {
           return state.status.isSubmissionInProgress
               ? const CircularProgressIndicator()
               : ElevatedButton(
-              key: const Key('loginForm_continue_raisedButton'),
               onPressed: state.status.isValidated
                   ? () {
                       context.read<LoginBloc>().add(const LoginSubmitted());
                     }
                   : null,
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                minimumSize: const Size.fromHeight(50)
+              ),
               child: const Text('Login')
           );
         }
     );
   }
+}
+
+class _RegisterButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: () => Navigator.of(context).push(RegisterPage.route()),
+      child: const Text('Register'),
+    );
+  }
+
 }
