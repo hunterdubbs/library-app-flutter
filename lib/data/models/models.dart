@@ -3,3 +3,7 @@ export 'collection.dart';
 export 'book.dart';
 export 'author.dart';
 export 'collection_membership.dart';
+export 'library_permission.dart';
+export 'user.dart';
+export 'invite.dart';
+export 'full_library_permission.dart';

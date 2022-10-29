@@ -291,6 +291,66 @@ class LibraryApi extends WebApi{
       throw Exception();
     }
   }
+  
+  Future<FullLibraryPermission> getLibraryPermissions({required int libraryId}) async {
+     final response = await getRequest(
+       uri: buildUri('permission/library/$libraryId'),
+       headers: await buildHeaderWithAuth()
+     );
+     if(response.statusCode == 200){
+       final json = jsonDecode(response.body);
+       List<LibraryPermission> permissions = List<LibraryPermission>.from(json['permissions'].map((i) => LibraryPermission.fromJson(i)));
+       List<Invite> invites = List<Invite>.from(json['invites'].map((i) => Invite.fromJson(i)));
+       return FullLibraryPermission(permissions: permissions, invites: invites);
+     }else {
+       throw Exception();
+     }
+  }
+
+  Future<List<User>> searchUsers({required String searchTerm}) async {
+    final response = await getRequest(
+      uri: buildUriWithQueryParams('permission/user/search', {
+        'searchTerm': searchTerm
+      }),
+      headers: await buildHeaderWithAuth()
+    );
+    if(response.statusCode == 200){
+      final List<dynamic> json = jsonDecode(response.body);
+      List<User> users = List<User>.from(json.map((i) => User.fromJson(i)));
+      return users;
+    }else{
+      throw Exception();
+    }
+  }
+  
+  Future<void> createInvite({
+    required int libraryId,
+    required String recipientId,
+    required int permissionLevel
+  }) async {
+    final response = await postRequest(
+      uri: buildUri('permission/invite/create'),
+      headers: await buildHeaderWithAuth(),
+      body: jsonEncode({
+        'libraryId': libraryId,
+        'recipientId': recipientId,
+        'permissionType': permissionLevel
+      })
+    );
+    if(response.statusCode == 200){
+      return;
+    }else if(response.statusCode == 400){
+      throw CreateInviteException(response.body);
+    }else{
+      throw Exception();
+    }
+  }
 }
 
 class LibraryNotFoundException implements Exception {}
+
+class CreateInviteException implements Exception {
+  const CreateInviteException(this.msg);
+
+  final String msg;
+}

@@ -5,6 +5,7 @@ import 'package:library_app/collections/view/collections_page.dart';
 import 'package:library_app/data/library_api.dart';
 import 'package:library_app/library/bloc/library_bloc.dart';
 import 'package:library_app/library_add/view/library_add_page.dart';
+import 'package:library_app/permissions/view/permissions_page.dart';
 import 'package:library_app/widgets/widgets.dart';
 
 class LibraryPage extends StatelessWidget {
@@ -161,6 +162,9 @@ class LibraryPage extends StatelessWidget {
                                 context.read<LibraryBloc>().add(LibraryModifiedEvent(library.id, name));
                               }
                             });
+                          },
+                          onEditShare: () {
+                            Navigator.of(context).push(PermissionsPage.route(library: library));
                           },
                         )
                     ],

@@ -8,3 +8,5 @@ export 'submit_button.dart';
 export 'collection_membership_tile.dart';
 export 'author_list_tile.dart';
 export 'author_tile.dart';
+export 'library_permission_tile.dart';
+export 'user_tile.dart';
