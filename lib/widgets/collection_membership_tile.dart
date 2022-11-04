@@ -29,7 +29,7 @@ class CollectionMembershipTile extends StatelessWidget{
                   padding: const EdgeInsets.all(10),
                   child: Checkbox(
                     value: membership.isMember,
-                    onChanged: (value) => onTap,
+                    onChanged: membership.isUserModifiable ? (value) => onTap : null,
                   ),
                 ),
                 Text(membership.name,

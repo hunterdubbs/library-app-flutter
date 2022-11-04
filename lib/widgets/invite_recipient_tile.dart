@@ -2,17 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:library_app/data/models/models.dart';
 
-class LibraryPermissionTile extends StatelessWidget {
-  const LibraryPermissionTile({
+class InviteRecipientTile extends StatelessWidget {
+  const InviteRecipientTile({
     Key? key,
-    required this.library,
-    required this.permission,
-    this.onDeletePermission
+    required this.invite,
+    this.onAccept,
+    this.onReject
   }) : super(key: key);
 
-  final Library library;
-  final LibraryPermission permission;
-  final VoidCallback? onDeletePermission;
+  final Invite invite;
+  final VoidCallback? onAccept;
+  final VoidCallback? onReject;
 
   @override
   Widget build(BuildContext context) {
@@ -34,37 +34,49 @@ class LibraryPermissionTile extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Text(permission.username,
+                        Text(invite.libraryName,
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w500
                           )
                         ),
-                        Text(permission.permissionName,
+                        Text('From: ${invite.inviterUsername}',
                           style: const TextStyle(
                             fontSize: 14
                           )
                         )
                       ],
-                    ),
+                    )
                   )
                 ),
-                if(library.permissions == 3 && permission.permission != 3) SizedBox(
+                SizedBox(
+                  width: 50,
+                  height: 90,
+                  child: IconButton(
+                    icon: const Icon(
+                      CupertinoIcons.checkmark,
+                      size: 36,
+                      semanticLabel: 'accept invite',
+                    ),
+                    onPressed: onAccept,
+                  )
+                ),
+                SizedBox(
                   width: 50,
                   height: 90,
                   child: IconButton(
                     icon: const Icon(
                       CupertinoIcons.xmark,
                       size: 36,
-                      semanticLabel: 'remove permission',
+                      semanticLabel: 'reject invite',
                     ),
-                    onPressed: onDeletePermission,
-                  ),
+                    onPressed: onReject,
+                  )
                 )
               ],
-            ),
+            )
           )
-        )
+        ),
       )
     );
   }

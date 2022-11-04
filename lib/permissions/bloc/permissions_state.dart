@@ -1,6 +1,6 @@
 part of 'permissions_bloc.dart';
 
-enum PermissionsStatus{ initial, loading, loaded, error, modifying, modified}
+enum PermissionsStatus{ initial, loading, loaded, error, modifying, modified, errorModifying }
 
 class PermissionsState extends Equatable {
   const PermissionsState({

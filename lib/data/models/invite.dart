@@ -23,6 +23,21 @@ class Invite extends Equatable {
   final int permissionLevel;
   final DateTime sent;
 
+  String get permissionName {
+    switch (permissionLevel) {
+      case 3:
+        return 'Owner';
+      case 2:
+        return 'Editor';
+      case 1:
+        return 'Viewer';
+      case -1:
+        return 'Invite';
+      default:
+        return 'Unknown';
+    }
+  }
+
   Invite.fromJson(Map json)
     : id = json['id'],
       libraryId = json['libraryID'],
@@ -32,7 +47,7 @@ class Invite extends Equatable {
       recipientId = json['recipientID'],
       recipientUsername = json['recipientUsername'],
       permissionLevel = json['permissionLevel'],
-      sent = json['sent'];
+      sent = DateTime.parse(json['sent']);
 
   @override
   List<Object> get props => [id, libraryId, libraryName, inviterId, inviterUsername, recipientId, recipientUsername, permissionLevel, sent];

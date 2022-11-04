@@ -56,7 +56,7 @@ class BookTile extends StatelessWidget {
                       ),
                     ),
                   ),
-                  if(library.permissions > 2) SizedBox(
+                  if(library.permissions > 1) SizedBox(
                     width: 50,
                     height: 90,
                     child: IconButton(
@@ -68,7 +68,7 @@ class BookTile extends StatelessWidget {
                       onPressed: onEditCollections,
                     ),
                   ),
-                  if(library.permissions > 2) SizedBox(
+                  if(library.permissions > 1) SizedBox(
                     width: 50,
                     height: 90,
                     child: IconButton(
@@ -80,7 +80,7 @@ class BookTile extends StatelessWidget {
                       onPressed: onEditBook,
                     ),
                   ),
-                  if(library.permissions > 2) SizedBox(
+                  if(library.permissions > 1) SizedBox(
                     width: 50,
                     height: 90,
                     child: IconButton(

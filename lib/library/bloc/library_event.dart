@@ -12,12 +12,13 @@ class LoadLibrariesEvent extends LibraryEvent {
 }
 
 class LibraryDeletedEvent extends LibraryEvent {
-  const LibraryDeletedEvent(this.libraryId);
+  const LibraryDeletedEvent(this.libraryId, this.isOwner);
 
   final int libraryId;
+  final bool isOwner;
 
   @override
-  List<Object> get props => [libraryId];
+  List<Object> get props => [libraryId, isOwner];
 }
 
 class LibraryModifiedEvent extends LibraryEvent {

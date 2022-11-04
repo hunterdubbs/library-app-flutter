@@ -19,3 +19,30 @@ class BookDeletedEvent extends BooksEvent {
   @override
   List<Object> get props => [bookId];
 }
+
+class QueryTextChanged extends BooksEvent {
+  const QueryTextChanged(this.queryText);
+
+  final String queryText;
+
+  @override
+  List<Object> get props => [queryText];
+}
+
+class QueryTypeChanged extends BooksEvent {
+  const QueryTypeChanged(this.queryType);
+
+  final QueryType queryType;
+
+  @override
+  List<Object> get props => [queryType];
+}
+
+class SortTypeChanged extends BooksEvent {
+  const SortTypeChanged(this.sortType);
+
+  final SortType sortType;
+
+  @override
+  List<Object> get props => [sortType];
+}

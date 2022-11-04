@@ -13,6 +13,8 @@ class PermissionsBloc extends Bloc<PermissionsEvent, PermissionsState> {
   }) : _libraryApi = libraryApi,
   super(PermissionsState(library : library)){
     on<LoadPermissions>(_loadPermissions);
+    on<DeleteInvite>(_deleteInvite);
+    on<DeletePermission>(_deletePermission);
   }
 
   final LibraryApi _libraryApi;
@@ -31,6 +33,32 @@ class PermissionsBloc extends Bloc<PermissionsEvent, PermissionsState> {
       ));
     }catch(_){
       emit(state.copyWith(status: PermissionsStatus.error, errorMsg: 'Error loading library permissions'));
+    }
+  }
+
+  void _deleteInvite(
+      DeleteInvite event,
+      Emitter<PermissionsState> emit
+      ) async {
+    emit(state.copyWith(status: PermissionsStatus.modifying));
+    try{
+      await _libraryApi.deleteInvite(inviteId: event.invite.id);
+      emit(state.copyWith(status: PermissionsStatus.modified));
+    }catch(_){
+      emit(state.copyWith(status: PermissionsStatus.errorModifying, errorMsg: 'Error deleting invite'));
+    }
+  }
+
+  void _deletePermission(
+      DeletePermission event,
+      Emitter<PermissionsState> emit
+      ) async {
+    emit(state.copyWith(status: PermissionsStatus.modifying));
+    try{
+      await _libraryApi.deletePermission(userId: event.permission.userId, libraryId: state.library.id);
+      emit(state.copyWith(status: PermissionsStatus.modified));
+    }catch(_){
+      emit(state.copyWith(status: PermissionsStatus.errorModifying, errorMsg: 'Error removing user'));
     }
   }
 }

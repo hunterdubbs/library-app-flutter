@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:library_app/books/models/models.dart';
 import 'package:library_app/data/library_api.dart';
 import 'package:library_app/data/models/models.dart';
 
@@ -16,6 +17,9 @@ class BooksBloc extends Bloc<BooksEvent, BooksState> {
   super(BooksState(library: library, collection: collection)){
     on<LoadBooksEvent>(_loadBooks);
     on<BookDeletedEvent>(_deleteBook);
+    on<QueryTextChanged>(_queryTextChanged);
+    on<QueryTypeChanged>(_queryTypeChanged);
+    on<SortTypeChanged>(_sortTypeChanged);
   }
 
   final LibraryApi _libraryApi;
@@ -47,5 +51,38 @@ class BooksBloc extends Bloc<BooksEvent, BooksState> {
     }catch(_){
       emit(state.copyWith(status: BooksStatus.loaded, errorMsg: 'Error deleting book'));
     }
+  }
+
+  void _queryTextChanged(
+      QueryTextChanged event,
+      Emitter<BooksState> emit
+      ) {
+    emit(state.copyWith(
+      query: state.query.copyWith(
+        searchTerm: event.queryText
+      )
+    ));
+  }
+
+  void _queryTypeChanged(
+      QueryTypeChanged event,
+      Emitter<BooksState> emit
+      ) {
+    emit(state.copyWith(
+      query: state.query.copyWith(
+        queryType: event.queryType
+      )
+    ));
+  }
+
+  void _sortTypeChanged(
+      SortTypeChanged event,
+      Emitter<BooksState> emit
+      ) {
+    emit(state.copyWith(
+      query: state.query.copyWith(
+        sortType: event.sortType
+      )
+    ));
   }
 }

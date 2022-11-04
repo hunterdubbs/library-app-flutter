@@ -1,4 +1,4 @@
-package com.basedpenguin.library_app
+package com.basedpenguin.library.app
 
 import io.flutter.embedding.android.FlutterActivity
 

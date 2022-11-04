@@ -54,7 +54,7 @@ class CollectionTile extends StatelessWidget {
                       ),
                     ),
                   ),
-                  if(library.permissions > 2) SizedBox(
+                  if(library.permissions > 1) SizedBox(
                     width: 50,
                     height: 90,
                     child: IconButton(
@@ -66,7 +66,7 @@ class CollectionTile extends StatelessWidget {
                       onPressed: onEditCollection,
                     ),
                   ),
-                  if(library.permissions > 2) SizedBox(
+                  if(library.permissions > 1 && collection.isUserModifiable) SizedBox(
                     width: 50,
                     height: 90,
                     child: IconButton(

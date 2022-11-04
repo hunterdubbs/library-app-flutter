@@ -46,7 +46,7 @@ class PermissionsPage extends StatelessWidget {
       body: MultiBlocListener(
         listeners: [
           BlocListener<PermissionsBloc, PermissionsState>(
-            listenWhen: (previous, current) => previous.status != current.status && current.status == PermissionsStatus.error,
+            listenWhen: (previous, current) => previous.status != current.status && (current.status == PermissionsStatus.error || current.status == PermissionsStatus.errorModifying),
             listener: (context, state) {
               ScaffoldMessenger.of(context)
                   ..hideCurrentSnackBar()
@@ -54,7 +54,15 @@ class PermissionsPage extends StatelessWidget {
                     SnackBar(content: Text(state.errorMsg))
                   );
             },
-          )
+          ),
+          BlocListener<PermissionsBloc, PermissionsState>(
+            listenWhen: (previous, current) => previous.status != current.status,
+            listener: (context, state) {
+              if(state.status == PermissionsStatus.modified){
+                context.read<PermissionsBloc>().add(const LoadPermissions());
+              }
+            },
+          ),
         ],
         child: BlocBuilder<PermissionsBloc, PermissionsState>(
           builder: (context, state) {
@@ -80,7 +88,60 @@ class PermissionsPage extends StatelessWidget {
                           for(final permission in state.permissions)
                             LibraryPermissionTile(
                               permission: permission,
-                              library: state.library
+                              library: state.library,
+                              onDeletePermission: (){
+                                showDialog<bool?>(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                    AlertDialog(
+                                      title: const Text('Remove User'),
+                                      content: const Text('Are you sure you want to remove this user from the library?'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () => Navigator.of(context).pop(false),
+                                          child: const Text('Cancel')
+                                        ),
+                                        TextButton(
+                                          onPressed: () => Navigator.of(context).pop(true),
+                                          child: const Text('Remove')
+                                        )
+                                      ]
+                                    )
+                                ).then((confirmed) {
+                                  if(confirmed != null && confirmed == true){
+                                    context.read<PermissionsBloc>().add(DeletePermission(permission));
+                                  }
+                                });
+                              },
+                            ),
+                          for(final invite in state.invites)
+                            InviteSenderTile(
+                              library: state.library,
+                              invite: invite,
+                              onDelete: () {
+                                showDialog<bool?>(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      AlertDialog(
+                                        title: const Text('Delete Invite'),
+                                        content: const Text('Are you sure you want to delete this invite?'),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () => Navigator.of(context).pop(false),
+                                            child: const Text('Cancel'),
+                                          ),
+                                          TextButton(
+                                            onPressed: () => Navigator.of(context).pop(true),
+                                            child: const Text('Delete'),
+                                          )
+                                        ],
+                                      )
+                                ).then((confirmed) {
+                                  if(confirmed != null && confirmed == true){
+                                    context.read<PermissionsBloc>().add(DeleteInvite(invite));
+                                  }
+                                });
+                              },
                             )
                         ],
                       )

@@ -60,7 +60,8 @@ class BookCollectionsBloc extends Bloc<BookCollectionsEvent, BookCollectionsStat
       name: changingObj.name,
       description: changingObj.description,
       parentCollectionId:  changingObj.parentCollectionId,
-      isMember: !changingObj.isMember
+      isMember: !changingObj.isMember,
+      isUserModifiable: changingObj.isUserModifiable
     );
 
     state.collections.removeAt(index);

@@ -31,14 +31,14 @@ class CollectionsPage extends StatelessWidget {
         buildWhen: (previous, current) => previous.library != current.library,
         builder: (context, state) {
           return FloatingActionButton(
-            onPressed: () {
+            onPressed: state.library.permissions > 1 ? () {
               Navigator.of(context).push<bool?>(CollectionAddPage.route(libraryId: state.library.id))
                   .then((refresh) {
                 if(refresh != null && refresh == true){
                   Navigator.of(context).pushReplacement(CollectionsPage.route(library: state.library));
                 }
               });
-            },
+            } : null,
             child: const Icon(Icons.add)
           );
         },

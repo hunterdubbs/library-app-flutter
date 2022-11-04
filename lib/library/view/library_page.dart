@@ -72,7 +72,7 @@ class LibraryPage extends StatelessWidget {
                 return const FullPageError(text: 'Error Loading Libraries');
               }
               if(state.libraries.isEmpty){
-                return const Center(child: Text('You currently don\'t have any libraries. Try creating one below.'));
+                return const Center(child: Text('You currently don\'t have any libraries. Try creating one below.', textAlign: TextAlign.center,));
               }
               return RefreshIndicator(
                 onRefresh: () async {
@@ -93,12 +93,12 @@ class LibraryPage extends StatelessWidget {
                                 context: context,
                                 builder: (BuildContext context) =>
                                   AlertDialog(
-                                      title: const Text('Delete Library?'),
+                                      title: Text(library.permissions > 2 ? 'Delete Library?' : 'Leave Library?'),
                                       content: Column(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                           const Text(
-                                              'Enter library name to confirm deletion'),
+                                              'Enter library name to confirm'),
                                           TextField(
                                             controller: deleteController,
                                             decoration: const InputDecoration(
@@ -114,14 +114,14 @@ class LibraryPage extends StatelessWidget {
                                       ),
                                       TextButton(
                                         onPressed: () => Navigator.of(context).pop(deleteController.text),
-                                        child: const Text('Delete')
+                                        child: Text(library.permissions > 2 ? 'Delete' : 'Leave')
                                       )
                                     ],
                                 )
                             ).then((confirmation) {
                               if(confirmation != null && confirmation.isNotEmpty){
                                 if(confirmation == library.name){
-                                  context.read<LibraryBloc>().add(LibraryDeletedEvent(library.id));
+                                  context.read<LibraryBloc>().add(LibraryDeletedEvent(library.id, library.permissions > 2));
                                 }else{
                                   ScaffoldMessenger.of(context)
                                     ..hideCurrentSnackBar()

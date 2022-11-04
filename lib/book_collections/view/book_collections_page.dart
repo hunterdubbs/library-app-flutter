@@ -72,9 +72,9 @@ class BookCollectionsPage extends StatelessWidget{
                           for(final membership in state.collections)
                             CollectionMembershipTile(
                               membership: membership,
-                              onTap: () {
+                              onTap: membership.isUserModifiable ? () {
                                 context.read<BookCollectionsBloc>().add(CheckboxToggled(membership.id));
-                              }
+                              } : null
                             )
                         ],
                       ),

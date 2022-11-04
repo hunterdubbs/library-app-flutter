@@ -51,6 +51,18 @@ class LibraryApi extends WebApi{
     }
   }
 
+  Future<void> leaveLibrary({required int libraryId}) async {
+    final response = await deleteRequest(
+      uri: buildUri('library/leave/$libraryId'),
+      headers: await buildHeaderWithAuth()
+    );
+    if(response.statusCode == 200){
+      return;
+    }else{
+      throw Exception();
+    }
+  }
+
   Future<void> modifyLibrary({required int libraryId, required String name}) async {
     final response = await postRequest(
       uri: buildUri('library/modify'),
@@ -307,6 +319,22 @@ class LibraryApi extends WebApi{
      }
   }
 
+  Future<void> deletePermission({required String userId, required int libraryId}) async {
+    final response = await postRequest(
+      uri: buildUri('permission/remove'),
+      headers: await buildHeaderWithAuth(),
+      body: jsonEncode({
+        'libraryId': libraryId,
+        'userId': userId
+      })
+    );
+    if(response.statusCode == 200){
+      return;
+    }else{
+      throw Exception();
+    }
+  }
+
   Future<List<User>> searchUsers({required String searchTerm}) async {
     final response = await getRequest(
       uri: buildUriWithQueryParams('permission/user/search', {
@@ -345,12 +373,74 @@ class LibraryApi extends WebApi{
       throw Exception();
     }
   }
+
+  Future<void> deleteInvite({
+    required int inviteId
+  }) async {
+    final response = await deleteRequest(
+      uri: buildUri('permission/invite/$inviteId'),
+      headers: await buildHeaderWithAuth()
+    );
+    if(response.statusCode == 200){
+      return;
+    }else{
+      throw Exception();
+    }
+  }
+
+  Future<List<Invite>> getInvites() async {
+    final response = await getRequest(
+      uri: buildUri('permission/invites'),
+      headers: await buildHeaderWithAuth()
+    );
+    if(response.statusCode == 200){
+      final List<dynamic> json = jsonDecode(response.body);
+      List<Invite> invites = List<Invite>.from(json.map((i) => Invite.fromJson(i)));
+      return invites;
+    }else{
+      throw Exception();
+    }
+  }
+
+  Future<void> acceptInvite({
+    required int inviteId
+  }) async {
+    final response = await postRequest(
+        uri: buildUri('permission/invite/$inviteId/accept'),
+        headers: await buildHeaderWithAuth()
+    );
+    if(response.statusCode == 200){
+      return;
+    }else{
+      throw Exception();
+    }
+  }
+
+  Future<void> rejectInvite({
+    required int inviteId
+  }) async {
+    final response = await postRequest(
+        uri: buildUri('permission/invite/$inviteId/reject'),
+        headers: await buildHeaderWithAuth()
+    );
+    if(response.statusCode == 200){
+      return;
+    }else{
+      throw Exception();
+    }
+  }
 }
 
 class LibraryNotFoundException implements Exception {}
 
 class CreateInviteException implements Exception {
   const CreateInviteException(this.msg);
+
+  final String msg;
+}
+
+class InviteActionException implements Exception {
+  const InviteActionException(this.msg);
 
   final String msg;
 }

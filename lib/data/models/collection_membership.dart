@@ -7,7 +7,8 @@ class CollectionMembership extends Equatable {
     required this.parentCollectionId,
     required this.name,
     required this.description,
-    required this.isMember
+    required this.isMember,
+    required this.isUserModifiable
   });
 
   final int id;
@@ -16,6 +17,7 @@ class CollectionMembership extends Equatable {
   final String name;
   final String description;
   final bool isMember;
+  final bool isUserModifiable;
 
   CollectionMembership.fromJson(Map json)
       : id = json['id'],
@@ -23,7 +25,8 @@ class CollectionMembership extends Equatable {
         parentCollectionId = json['parentCollectionID'],
         name = json['name'],
         description = json['description'],
-        isMember = json['isMember'];
+        isMember = json['isMember'],
+        isUserModifiable = json['isUserModifiable'];
 
   toJson() => {
     'id': id,
@@ -31,9 +34,10 @@ class CollectionMembership extends Equatable {
     'parentCollectionID': parentCollectionId,
     'name': name,
     'description': description,
-    'isMember': isMember
+    'isMember': isMember,
+    'isUserModifiable': isUserModifiable
   };
 
   @override
-  List<Object> get props => [id, libraryId, parentCollectionId, name, description, isMember];
+  List<Object> get props => [id, libraryId, parentCollectionId, name, description, isMember, isUserModifiable];
 }

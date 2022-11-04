@@ -40,7 +40,11 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
     emit(state.copyWith(status: LibraryStatus.modifying));
 
     try{
-      await _libraryApi.deleteLibrary(libraryId: event.libraryId);
+      if(event.isOwner) {
+        await _libraryApi.deleteLibrary(libraryId: event.libraryId);
+      }else{
+        await _libraryApi.leaveLibrary(libraryId: event.libraryId);
+      }
       emit(state.copyWith(status: LibraryStatus.modified));
     }catch(_){
       emit(state.copyWith(status: LibraryStatus.loaded, errorMsg: 'Error deleting library'));
