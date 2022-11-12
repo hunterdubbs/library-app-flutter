@@ -40,6 +40,8 @@ class AuthenticationApi extends WebApi {
       saveAuth(Auth(userId, username, accessToken, refreshToken));
 
       _controller.add(AuthenticationStatus.authenticated);
+    }else if(response.statusCode == 400){
+      throw LoginException(response.body);
     }else{
       throw InvalidCredentialsException();
     }
@@ -69,6 +71,44 @@ class AuthenticationApi extends WebApi {
     }
   }
 
+  Future<void> requestPasswordReset({required String email}) async {
+    final response = await postRequest(
+      uri: buildUri('identity/requestreset'),
+      headers: await buildHeaderNoAuth(),
+      body: jsonEncode({
+        'email': email
+      })
+    );
+
+    if(response.statusCode == 200){
+      return;
+    }else{
+      throw Exception();
+    }
+  }
+
+  Future<void> resetPassword({
+    required String email,
+    required String code,
+    required String newPassword
+  }) async {
+    final response = await postRequest(
+      uri: buildUri('identity/reset'),
+      headers: await buildHeaderNoAuth(),
+      body: jsonEncode({
+        'email': email,
+        'password': newPassword,
+        'resetCode': code
+      })
+    );
+
+    if(response.statusCode == 200){
+      return;
+    }else{
+      throw Exception();
+    }
+  }
+
   void logOut(){
     clearAuth();
     _controller.add(AuthenticationStatus.unauthenticated);
@@ -83,4 +123,10 @@ class RegisterException implements Exception {
   const RegisterException(this.error);
 
   final String error;
+}
+
+class LoginException implements Exception {
+  const LoginException(this.msg);
+
+  final String msg;
 }

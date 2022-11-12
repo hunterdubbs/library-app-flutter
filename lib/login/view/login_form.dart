@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:library_app/login/bloc/login_bloc.dart';
 import 'package:library_app/register/view/register_page.dart';
+import 'package:library_app/request_password_reset/view/request_password_reset_page.dart';
 
 class LoginForm extends StatelessWidget {
   const LoginForm({Key? key}) : super(key: key);
@@ -10,27 +11,32 @@ class LoginForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<LoginBloc, LoginState>(
+        listenWhen: (previous, current) => previous.status != current.status,
         listener: (context, state) {
           if (state.status.isSubmissionFailure) {
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
               ..showSnackBar(
-                  const SnackBar(content: Text('Authentication Failed')));
+                  SnackBar(content: Text(state.errorMsg)));
           }
         },
         child: Align(
             alignment: const Alignment(0, -1 / 3),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                _UsernameInput(),
-                const Padding(padding: EdgeInsets.all(12)),
-                _PasswordInput(),
-                const Padding(padding: EdgeInsets.all(12)),
-                _RegisterButton(),
-                const Padding(padding: EdgeInsets.all(12)),
-                _LoginButton()
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _UsernameInput(),
+                  const Padding(padding: EdgeInsets.all(12)),
+                  _PasswordInput(),
+                  const Padding(padding: EdgeInsets.all(12)),
+                  _LoginButton(),
+                  const Padding(padding: EdgeInsets.all(12)),
+                  _ForgotPasswordButton(),
+                  const Padding(padding: EdgeInsets.all(12)),
+                  _RegisterButton(),
+                ],
+              ),
             )
         )
     );
@@ -111,5 +117,14 @@ class _RegisterButton extends StatelessWidget {
       child: const Text('Register'),
     );
   }
+}
 
+class _ForgotPasswordButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: () => Navigator.of(context).push(RequestPasswordResetPage.route()),
+      child: const Text('Forgot Password'),
+    );
+  }
 }

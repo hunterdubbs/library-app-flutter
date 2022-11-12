@@ -429,6 +429,20 @@ class LibraryApi extends WebApi{
       throw Exception();
     }
   }
+
+  Future<AccountInfo> loadAccountInfo() async {
+    final response = await getRequest(
+      uri: buildUri('account/info'),
+      headers: await buildHeaderWithAuth()
+    );
+    if(response.statusCode == 200){
+      final json = jsonDecode(response.body);
+      final accountInfo = AccountInfo.fromJson(json);
+      return accountInfo;
+    }else{
+      throw Exception();
+    }
+  }
 }
 
 class LibraryNotFoundException implements Exception {}

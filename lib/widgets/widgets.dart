@@ -12,3 +12,4 @@ export 'library_permission_tile.dart';
 export 'user_tile.dart';
 export 'invite_sender_tile.dart';
 export 'invite_recipient_tile.dart';
+export 'info_row.dart';

@@ -44,7 +44,7 @@ class RegisterPage extends StatelessWidget {
                   builder: (BuildContext context) =>
                       AlertDialog(
                         title: const Text('Account Created'),
-                        content: const Text('Login to get started'),
+                        content: const Text('Look for an email confirmation link in your inbox to activate your account.'),
                         actions: [
                           TextButton(
                             onPressed: () => Navigator.of(context).pop(),
