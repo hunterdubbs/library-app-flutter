@@ -443,6 +443,23 @@ class LibraryApi extends WebApi{
       throw Exception();
     }
   }
+  
+  Future<void> deleteAccount({
+    required String password
+  }) async {
+    final response = await postRequest(
+      uri: buildUri('account/delete'),
+      headers: await buildHeaderWithAuth(),
+      body: jsonEncode({
+        'password': password
+      })
+    );
+    if(response.statusCode == 200){
+      return;
+    }else{
+      throw Exception();
+    }
+  }
 }
 
 class LibraryNotFoundException implements Exception {}

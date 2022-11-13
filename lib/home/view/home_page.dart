@@ -1,9 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:library_app/account/view/account_page.dart';
 import 'package:library_app/authentication/bloc/authentication_bloc.dart';
 import 'package:library_app/invite/view/invite_page.dart';
 import 'package:library_app/library/view/library_page.dart';
+import 'package:library_app/widgets/menu_tile.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -17,57 +19,32 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Home')),
       body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+        child: GridView.count(
+          padding: const EdgeInsets.all(20),
+          crossAxisCount: 2,
+          mainAxisSpacing: 20,
+          crossAxisSpacing: 20,
+          shrinkWrap: true,
           children: <Widget>[
-            const Padding(padding: EdgeInsets.symmetric(vertical: 12)),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push(LibraryPage.route());
-              },
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
-              ),
-              child: const Text('Libraries', style: TextStyle(
-                fontSize: 18,
-              ),),
+            MenuTile(
+              title: 'Libraries',
+              icon: CupertinoIcons.book,
+              onTap: () => Navigator.of(context).push(LibraryPage.route()),
             ),
-            const Padding(padding: EdgeInsets.symmetric(vertical: 12)),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push(InvitePage.route());
-              },
-              style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
-              ),
-              child: const Text('Invites', style: TextStyle(
-                fontSize: 18,
-              ),),
+            MenuTile(
+              title: 'Invites',
+              icon: CupertinoIcons.person_2,
+              onTap: () => Navigator.of(context).push(InvitePage.route()),
             ),
-            const Padding(padding: EdgeInsets.symmetric(vertical: 12)),ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push(AccountPage.route());
-              },
-              style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
-              ),
-              child: const Text('Account', style: TextStyle(
-                fontSize: 18,
-              ),),
+            MenuTile(
+              title: 'Account',
+              icon: CupertinoIcons.person,
+              onTap: () => Navigator.of(context).push(AccountPage.route()),
             ),
-            const Padding(padding: EdgeInsets.symmetric(vertical: 12)),
-            ElevatedButton(
-              onPressed: (){
-                context
-                  .read<AuthenticationBloc>()
-                    .add(AuthenticationLogoutRequested());
-              },
-              style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
-              ),
-              child: const Text('Logout', style: TextStyle(
-                fontSize: 18,
-              ),),
+            MenuTile(
+              title: 'Logout',
+              icon: CupertinoIcons.arrow_left_square,
+              onTap: () => context.read<AuthenticationBloc>().add(AuthenticationLogoutRequested()),
             )
           ],
         )

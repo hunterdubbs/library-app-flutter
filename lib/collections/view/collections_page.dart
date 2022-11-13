@@ -82,58 +82,96 @@ class CollectionsPage extends StatelessWidget {
               return const Center(child: Text(
                   'You currently don\'t have any collection in this library.'));
             }
-            return RefreshIndicator(
-              onRefresh: () async {
-                context.read<CollectionsBloc>().add(const LoadCollectionsEvent());
-              },
-              child: CupertinoScrollbar(
-                child: ListView(
-                  children: [
-                    for(final collection in state.collections)
-                      CollectionTile(
-                          collection: collection,
-                          library: state.library,
-                          onEditCollection: () {
-                            Navigator.of(context).push<bool?>(CollectionAddPage.route(libraryId: collection.libraryId, collection: collection))
-                                .then((refresh) {
-                               if(refresh != null && refresh == true){
-                                 Navigator.of(context).pushReplacement(CollectionsPage.route(library: state.library));
-                               }
-                            });
-                          },
-                          onDeleteCollection: () {
-                            showDialog<bool>(
-                              context: context,
-                              builder: (BuildContext context) =>
-                                  AlertDialog(
-                                    title: const Text('Delete Collection?'),
-                                    content: const Text('Are you sure you want to delete this collection?'),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () => Navigator.of(context).pop(false),
-                                        child: const Text('Cancel'),
-                                      ),
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop(true);
-                                        },
-                                        child: const Text('Delete')
-                                      )
-                                    ],
-                                  )
-                            ).then((confirmed) {
-                              if(confirmed != null && confirmed == true){
-                                context.read<CollectionsBloc>().add(CollectionDeletedEvent(collection.id));
-                              }
-                            });
-                          },
-                        onTap: (){
-                            Navigator.of(context).push(BooksPage.route(library: state.library, collection: collection));
-                        },
+            final searchController = TextEditingController(text: state.query.searchTerm);
+            searchController.selection = TextSelection.fromPosition(TextPosition(offset: searchController.text.length));
+            return Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                  child: Row(
+                    children: [
+                      Expanded(
+                          child: TextField(
+                            controller: searchController,
+                            onChanged: (query) => context.read<CollectionsBloc>().add(QueryTextChanged(query)),
+                            decoration: const InputDecoration(
+                                hintText: 'Search'
+                            ),
+                          )
+                      ),
+                      SizedBox(
+                          width: 50,
+                          height: 50,
+                          child: IconButton(
+                            icon: const Icon(
+                              CupertinoIcons.xmark,
+                              size: 28,
+                              semanticLabel: 'clear search',
+                            ),
+                            onPressed: () => context.read<CollectionsBloc>().add(const QueryTextChanged('')),
+                          )
                       )
-                  ],
+                    ],
+                  ),
                 ),
-              ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: RefreshIndicator(
+                    onRefresh: () async {
+                      context.read<CollectionsBloc>().add(const LoadCollectionsEvent());
+                    },
+                    child: CupertinoScrollbar(
+                      child: ListView(
+                        shrinkWrap: true,
+                        children: [
+                          for(final collection in state.filteredCollections)
+                            CollectionTile(
+                                collection: collection,
+                                library: state.library,
+                                onEditCollection: () {
+                                  Navigator.of(context).push<bool?>(CollectionAddPage.route(libraryId: collection.libraryId, collection: collection))
+                                      .then((refresh) {
+                                     if(refresh != null && refresh == true){
+                                       Navigator.of(context).pushReplacement(CollectionsPage.route(library: state.library));
+                                     }
+                                  });
+                                },
+                                onDeleteCollection: () {
+                                  showDialog<bool>(
+                                    context: context,
+                                    builder: (BuildContext context) =>
+                                        AlertDialog(
+                                          title: const Text('Delete Collection?'),
+                                          content: const Text('Are you sure you want to delete this collection?'),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () => Navigator.of(context).pop(false),
+                                              child: const Text('Cancel'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop(true);
+                                              },
+                                              child: const Text('Delete')
+                                            )
+                                          ],
+                                        )
+                                  ).then((confirmed) {
+                                    if(confirmed != null && confirmed == true){
+                                      context.read<CollectionsBloc>().add(CollectionDeletedEvent(collection.id));
+                                    }
+                                  });
+                                },
+                              onTap: (){
+                                  Navigator.of(context).push(BooksPage.route(library: state.library, collection: collection));
+                              },
+                            )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             );
           },
         ),

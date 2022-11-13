@@ -85,6 +85,8 @@ class BooksPage extends StatelessWidget {
             if(state.books.isEmpty) {
               return const Center(child: Text('You currently don\'t have any books in this collection'));
             }
+            final searchController = TextEditingController(text: state.query.searchTerm);
+            searchController.selection = TextSelection.fromPosition(TextPosition(offset: searchController.text.length));
             return Column(
               children: [
                 Padding(
@@ -93,6 +95,7 @@ class BooksPage extends StatelessWidget {
                     children: [
                       Expanded(
                         child: TextField(
+                          controller: searchController,
                           onChanged: (query) => context.read<BooksBloc>().add(QueryTextChanged(query)),
                           decoration: const InputDecoration(
                             hintText: 'Search'

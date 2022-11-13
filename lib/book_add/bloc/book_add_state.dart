@@ -43,7 +43,7 @@ class BookAddState extends Equatable {
         authors: book.authors
       );
     }else{
-      return BookAddState(libraryId: libraryID, collectionId: collectionID, datePublished: DatePublished.pure(), authors: const <Author>[]);
+      return BookAddState(libraryId: libraryID, collectionId: collectionID, datePublished: DatePublished.pure(), authors: <Author>[]);
     }
   }
 

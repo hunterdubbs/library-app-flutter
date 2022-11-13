@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:library_app/account/bloc/account_bloc.dart';
 import 'package:library_app/data/library_api.dart';
-import 'package:library_app/register/view/register_page.dart';
+import 'package:library_app/delete_account/view/delete_account_page.dart';
 import 'package:library_app/widgets/widgets.dart';
 
 class AccountPage extends StatelessWidget {
@@ -69,9 +69,14 @@ class AccountPage extends StatelessWidget {
                   alignment: Alignment.bottomCenter,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                    child: SubmitButton(
-                      text: 'Delete Account',
-                      onTap: () => Navigator.of(context).push(RegisterPage.route()),
+                    child: ElevatedButton(
+                      onPressed: () => Navigator.of(context).push(DeleteAccountPage.route()),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.red.shade900,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                        minimumSize: const Size.fromHeight(50)
+                      ),
+                      child: const Text('Delete Account'),
                     )
                   )
                 )

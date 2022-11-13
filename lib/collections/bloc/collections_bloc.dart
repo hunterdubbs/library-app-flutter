@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:library_app/data/library_api.dart';
 import 'package:library_app/data/models/models.dart';
+import 'package:library_app/collections/models/models.dart';
 
 part 'collections_event.dart';
 part 'collections_state.dart';
@@ -15,6 +16,7 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
     super(CollectionsState(library: library)) {
       on<LoadCollectionsEvent>(_loadCollections);
       on<CollectionDeletedEvent>(_deleteCollection);
+      on<QueryTextChanged>(_queryTextChanged);
   }
 
   final LibraryApi _libraryApi;
@@ -46,5 +48,16 @@ class CollectionsBloc extends Bloc<CollectionsEvent, CollectionsState> {
       }catch(_){
         emit(state.copyWith(status: CollectionsStatus.loaded, errorMsg: 'Error deleting collection'));
       }
+    }
+
+    void _queryTextChanged(
+        QueryTextChanged event,
+        Emitter<CollectionsState> emit
+        ) {
+      emit(state.copyWith(
+        query: state.query.copyWith(
+          searchTerm: event.searchTerm
+        )
+      ));
     }
 }

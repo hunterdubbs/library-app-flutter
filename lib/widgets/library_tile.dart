@@ -43,12 +43,7 @@ class LibraryTile extends StatelessWidget {
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w500
-                          )
-                        ),
-                        Text('Owner: ${library.owner}',
-                          style: const TextStyle(
-                            fontSize: 14
-                          )
+                          ),
                         ),
                         Text(library.permissionsName)
                       ],

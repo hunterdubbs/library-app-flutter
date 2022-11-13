@@ -19,3 +19,12 @@ class CollectionDeletedEvent extends CollectionsEvent {
   @override
   List<Object> get props => [collectionId];
 }
+
+class QueryTextChanged extends CollectionsEvent {
+  const QueryTextChanged(this.searchTerm);
+
+  final String searchTerm;
+
+  @override
+  List<Object> get props => [searchTerm];
+}

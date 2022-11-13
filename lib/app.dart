@@ -55,6 +55,12 @@ class _AppViewState extends State<AppView> {
   Widget build(BuildContext context) {
     return MaterialApp(
         navigatorKey: _navigatorKey,
+        theme: ThemeData.from(
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color.fromARGB(255, 45, 26, 81),
+            background: const Color.fromARGB(255, 240, 240, 240)
+          )
+        ),
         builder: (context, child) {
           return BlocListener<AuthenticationBloc, AuthenticationState>(
               listener: (context, state) {
