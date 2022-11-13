@@ -202,7 +202,8 @@ class LibraryApi extends WebApi{
     required String title,
     required String synopsis,
     required DateTime datePublished,
-    required List<Author> authors
+    required List<Author> authors,
+    required List<Tag> tags
   }) async {
     final response = await postRequest(
       uri: buildUri('book/create'),
@@ -213,7 +214,8 @@ class LibraryApi extends WebApi{
         'libraryID': libraryId,
         'datePublished': datePublished.toIso8601String(),
         'collectionID': collectionId,
-        'authors': authors.map((i) => i.toJson()).toList()
+        'authors': authors.map((i) => i.toJson()).toList(),
+        'tags': tags.map((i) => i.toJson()).toList()
       })
     );
     if(response.statusCode == 200){
@@ -229,7 +231,8 @@ class LibraryApi extends WebApi{
     required String title,
     required String synopsis,
     required DateTime datePublished,
-    required List<Author> authors
+    required List<Author> authors,
+    required List<Tag> tags
   }) async {
     final response = await postRequest(
       uri: buildUri('book/modify'),
@@ -240,7 +243,8 @@ class LibraryApi extends WebApi{
         'synopsis': synopsis,
         'libraryID': libraryId,
         'datePublished': datePublished.toIso8601String(),
-        'authors': authors.map((i) => i.toJson()).toList()
+        'authors': authors.map((i) => i.toJson()).toList(),
+        'tags': tags.map((i) => i.toJson()).toList()
       })
     );
     if(response.statusCode == 200){
@@ -439,6 +443,43 @@ class LibraryApi extends WebApi{
       final json = jsonDecode(response.body);
       final accountInfo = AccountInfo.fromJson(json);
       return accountInfo;
+    }else{
+      throw Exception();
+    }
+  }
+
+  Future<List<Tag>> getTags({
+    required int libraryId
+  }) async {
+    final response = await getRequest(
+      uri: buildUri('book/tags/$libraryId'),
+      headers: await buildHeaderWithAuth()
+    );
+    if(response.statusCode == 200){
+      final List<dynamic> json = jsonDecode(response.body);
+      List<Tag> tags = List<Tag>.from(json.map((i) => Tag.fromJson(i)));
+      return tags;
+    }else{
+      throw Exception();
+    }
+  }
+
+  Future<Tag> createTag({
+    required int libraryId,
+    required String name
+  }) async {
+    final response = await postRequest(
+      uri: buildUri('book/tags/create'),
+      headers: await buildHeaderWithAuth(),
+      body: jsonEncode({
+        'libraryId': libraryId,
+        'name': name
+      })
+    );
+    if(response.statusCode == 200){
+      final json = jsonDecode(response.body);
+      Tag tag = Tag.fromJson(json);
+      return tag;
     }else{
       throw Exception();
     }

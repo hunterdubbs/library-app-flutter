@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:library_app/data/models/models.dart';
 
+enum BookMenu{ edit, delete, collections}
+
 class BookTile extends StatelessWidget {
   const BookTile({
     Key? key,
@@ -52,46 +54,75 @@ class BookTile extends StatelessWidget {
                                   fontSize: 12
                               )
                           ),
+                          if(book.tags.isNotEmpty) Text('Tags: ${book.tags.map((t) => t.name).join(', ')}',
+                            style: const TextStyle(
+                              fontSize: 12,
+                              fontStyle: FontStyle.italic
+                            )
+                          )
                         ],
                       ),
                     ),
                   ),
-                  if(library.permissions > 1) SizedBox(
-                    width: 50,
-                    height: 90,
-                    child: IconButton(
-                      icon: const Icon(
-                        CupertinoIcons.eye_fill,
-                        size: 36,
-                        semanticLabel: 'visible collections',
+                  if(library.permissions > 1) PopupMenuButton(
+                    itemBuilder: (BuildContext context) => <PopupMenuEntry<BookMenu>>[
+                      if(library.permissions > 1) PopupMenuItem<BookMenu>(
+                        value: BookMenu.collections,
+                        child: Row(
+                          children: const [
+                            Icon(
+                              CupertinoIcons.eye_fill,
+                              size: 36,
+                              semanticLabel: 'visibly collections',
+                            ),
+                            Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
+                            Text('Visible Collections')
+                          ],
+                        ),
                       ),
-                      onPressed: onEditCollections,
-                    ),
-                  ),
-                  if(library.permissions > 1) SizedBox(
-                    width: 50,
-                    height: 90,
-                    child: IconButton(
-                      icon: const Icon(
-                        CupertinoIcons.pencil,
-                        size: 36,
-                        semanticLabel: 'edit book',
+                      if(library.permissions > 1) PopupMenuItem<BookMenu>(
+                        value: BookMenu.edit,
+                        child: Row(
+                          children: const [
+                            Icon(
+                              CupertinoIcons.pencil,
+                              size: 36,
+                              semanticLabel: 'edit book',
+                            ),
+                            Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
+                            Text('Edit')
+                          ],
+                        ),
                       ),
-                      onPressed: onEditBook,
-                    ),
-                  ),
-                  if(library.permissions > 1) SizedBox(
-                    width: 50,
-                    height: 90,
-                    child: IconButton(
-                      icon: const Icon(
-                        CupertinoIcons.trash_fill,
-                        size: 36,
-                        semanticLabel: 'delete book',
+                      if(library.permissions > 1) PopupMenuItem<BookMenu>(
+                        value: BookMenu.delete,
+                        child: Row(
+                          children: const [
+                            Icon(
+                              CupertinoIcons.trash_fill,
+                              size: 36,
+                              semanticLabel: 'delete book',
+                            ),
+                            Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
+                            Text('Delete')
+                          ],
+                        ),
                       ),
-                      onPressed: onDeleteBook,
-                    ),
-                  ),
+                    ],
+                    onSelected: (BookMenu item) {
+                      switch(item){
+                        case BookMenu.collections:
+                          onEditCollections?.call();
+                          break;
+                        case BookMenu.edit:
+                          onEditBook?.call();
+                          break;
+                        case BookMenu.delete:
+                          onDeleteBook?.call();
+                          break;
+                      }
+                    },
+                  )
                 ],
               )
           ),

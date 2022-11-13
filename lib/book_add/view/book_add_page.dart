@@ -7,6 +7,7 @@ import 'package:library_app/book_add/bloc/book_add_bloc.dart';
 import 'package:library_app/book_add/models/models.dart';
 import 'package:library_app/data/library_api.dart';
 import 'package:library_app/data/models/models.dart';
+import 'package:library_app/tags/view/tags_page.dart';
 import 'package:library_app/widgets/widgets.dart';
 
 class BookAddPage extends StatelessWidget{
@@ -62,7 +63,9 @@ class BookAddPage extends StatelessWidget{
                         const Padding(padding: EdgeInsets.symmetric(horizontal: 12),),
                         _DatePublishedInput(),
                         const Padding(padding: EdgeInsets.symmetric(horizontal: 12),),
-                        _AuthorsInput()
+                        _AuthorsInput(),
+                        const Padding(padding: EdgeInsets.symmetric(horizontal: 12)),
+                        _TagsInput()
                       ],
                     )
                   ),
@@ -250,6 +253,53 @@ class _AuthorsInput extends StatelessWidget{
               )
             ],
           )
+        );
+      },
+    );
+  }
+}
+
+class _TagsInput extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<BookAddBloc, BookAddState>(
+      buildWhen: (previous, current) => previous.tags != current.tags || previous.rev != current.rev,
+      builder: (context, state) {
+        return InputDecorator(
+            decoration: const InputDecoration(
+                labelText: 'Tags'
+            ),
+            child: Column(
+              children: [
+                for(final tag in state.tags)
+                  TagListTile(
+                      tag: tag,
+                      onDelete: (){
+                        context.read<BookAddBloc>().add(TagRemoved(tag.id));
+                      }
+                  ),
+                Card(
+                  child: InkWell(
+                      splashColor: Colors.blue.withAlpha(20),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: SizedBox(
+                            width: 800,
+                            height: 40,
+                            child: TextButton(
+                              child: const Text('Add Tag'),
+                              onPressed: () {
+                                Navigator.of(context).push<Tag?>(TagsPage.route(libraryId: state.libraryId)).then((tag) {
+                                  if(tag != null) context.read<BookAddBloc>().add(TagAdded(tag));
+                                });
+                              },
+                            )
+                        ),
+                      )
+                  ),
+                )
+              ],
+            )
         );
       },
     );

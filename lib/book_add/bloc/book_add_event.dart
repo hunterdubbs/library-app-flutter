@@ -52,6 +52,24 @@ class AuthorRemoved extends BookAddEvent{
   List<Object> get props => [authorId];
 }
 
+class TagAdded extends BookAddEvent {
+  const TagAdded(this.tag);
+
+  final Tag tag;
+
+  @override
+  List<Object> get props => [tag];
+}
+
+class TagRemoved extends BookAddEvent {
+  const TagRemoved(this.tagId);
+
+  final int tagId;
+
+  @override
+  List<Object> get props => [tagId];
+}
+
 class Submitted extends BookAddEvent{
   const Submitted();
 }

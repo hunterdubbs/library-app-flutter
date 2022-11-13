@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:library_app/data/models/models.dart';
 
+enum LibraryMenu{ share, edit, delete }
+
 class LibraryTile extends StatelessWidget {
   const LibraryTile({
     Key? key,
@@ -28,7 +30,7 @@ class LibraryTile extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: SizedBox(
             width: 400,
-            height: 100,
+            height: 120,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -45,47 +47,75 @@ class LibraryTile extends StatelessWidget {
                             fontWeight: FontWeight.w500
                           ),
                         ),
+                        Text('${library.bookCount} ${library.bookCount == 1 ? 'Book' : 'Books'}',
+                            style: const TextStyle(
+                                fontStyle: FontStyle.italic
+                            )
+                        ),
                         Text(library.permissionsName)
                       ],
                     ),
                   ),
                 ),
-                if(library.permissions == 3) SizedBox(
-                  width: 50,
-                  height: 90,
-                    child: IconButton(
-                      icon: const Icon(
-                        CupertinoIcons.person_2_fill,
-                        size: 36,
-                        semanticLabel: 'manage sharing',
-                      ),
-                      onPressed: onEditShare,
+                PopupMenuButton(
+                  itemBuilder: (BuildContext context) => <PopupMenuEntry<LibraryMenu>>[
+                    if(library.permissions == 3) PopupMenuItem<LibraryMenu>(
+                      value: LibraryMenu.share,
+                      child: Row(
+                        children: const [
+                          Icon(
+                            CupertinoIcons.person_2_fill,
+                            size: 36,
+                            semanticLabel: 'manage sharing',
+                          ),
+                          Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
+                          Text('Permissions')
+                        ],
+                      )
                     ),
+                    if(library.permissions == 3) PopupMenuItem<LibraryMenu>(
+                      value: LibraryMenu.edit,
+                      child: Row(
+                        children: const [
+                          Icon(
+                            CupertinoIcons.pencil,
+                            size: 36,
+                            semanticLabel: 'edit library details',
+                          ),
+                          Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
+                          Text('Edit')
+                        ],
+                      )
+                    ),
+                    PopupMenuItem<LibraryMenu>(
+                      value: LibraryMenu.delete,
+                      child: Row(
+                        children: const [
+                          Icon(
+                            CupertinoIcons.trash_fill,
+                            size: 36,
+                            semanticLabel: 'delete library',
+                          ),
+                          Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
+                          Text('Delete')
+                        ],
+                      )
+                    )
+                  ],
+                  onSelected: (LibraryMenu item){
+                    switch(item){
+                      case LibraryMenu.share:
+                        onEditShare?.call();
+                        break;
+                      case LibraryMenu.edit:
+                        onEditLibrary?.call();
+                        break;
+                      case LibraryMenu.delete:
+                        onDeleteLibrary?.call();
+                        break;
+                    }
+                  },
                 ),
-                if(library.permissions == 3) SizedBox(
-                  width: 50,
-                  height: 90,
-                  child: IconButton(
-                    icon: const Icon(
-                      CupertinoIcons.pencil,
-                      size: 36,
-                      semanticLabel: 'edit library details',
-                    ),
-                    onPressed: onEditLibrary,
-                  ),
-                ),
-                SizedBox(
-                  width: 50,
-                  height: 90,
-                  child: IconButton(
-                    icon: Icon(
-                      CupertinoIcons.trash_fill,
-                      size: 36,
-                      semanticLabel: library.permissions < 3 ? 'stop following library' : 'delete library',
-                    ),
-                    onPressed: onDeleteLibrary,
-                  ),
-                )
               ],
             )
           ),

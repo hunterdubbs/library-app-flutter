@@ -55,7 +55,8 @@ class BookDetailsPage extends StatelessWidget {
                     ),
                     const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
                     Text('Date Published:  ${DateFormat('MMM dd, yyyy').format(state.book.publishedDate)}', style: metaDataTextStyle),
-                    Text('Date Added to Library:  ${DateFormat('MMM dd, yyyy').format(state.book.addedDate)}', style: metaDataTextStyle)
+                    Text('Date Added to Library:  ${DateFormat('MMM dd, yyyy').format(state.book.addedDate)}', style: metaDataTextStyle),
+                    Text('Tags: ${state.book.tags.map((t) => t.name).join(', ')}', style: metaDataTextStyle)
                   ],
                 ),
               ),

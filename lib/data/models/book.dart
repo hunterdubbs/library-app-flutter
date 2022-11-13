@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:library_app/data/models/author.dart';
+import 'package:library_app/data/models/tag.dart';
 
 class Book extends Equatable {
   const Book({
@@ -9,7 +10,8 @@ class Book extends Equatable {
     required this.synopsis,
     required this.addedDate,
     required this.publishedDate,
-    required this.authors
+    required this.authors,
+    required this.tags
   });
 
   final int id;
@@ -19,6 +21,7 @@ class Book extends Equatable {
   final DateTime addedDate;
   final DateTime publishedDate;
   final List<Author> authors;
+  final List<Tag> tags;
 
   Book.fromJson(Map json) :
     id = json['id'],
@@ -27,7 +30,8 @@ class Book extends Equatable {
     synopsis = json['synopsis'],
     addedDate = DateTime.parse(json['dateAdded']),
     publishedDate = DateTime.parse(json['datePublished']),
-    authors = List<Author>.from(json['authors'].map((i) => Author.fromJson(i))).toList();
+    authors = List<Author>.from(json['authors'].map((i) => Author.fromJson(i))).toList(),
+    tags = List<Tag>.from(json['tags'].map((i) => Tag.fromJson(i))).toList();
 
   toJson() => {
     'ID': id,
@@ -36,9 +40,10 @@ class Book extends Equatable {
     'Synopsis': synopsis,
     'DateAdded': addedDate,
     'DatePublished': publishedDate,
-    'Authors': authors.map((i) => i.toJson())
+    'Authors': authors.map((i) => i.toJson()),
+    'Tags': tags.map((i) => i.toJson())
   };
 
   @override
-  List<Object> get props => [id, libraryId, title, synopsis, addedDate, publishedDate, authors];
+  List<Object> get props => [id, libraryId, title, synopsis, addedDate, publishedDate, authors, tags];
 }

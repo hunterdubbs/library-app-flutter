@@ -6,7 +6,6 @@ import 'package:library_app/data/library_api.dart';
 import 'package:library_app/delete_account/bloc/delete_account_bloc.dart';
 import 'package:library_app/delete_account/models/models.dart';
 import 'package:library_app/login/view/login_page.dart';
-import 'package:library_app/widgets/widgets.dart';
 
 class DeleteAccountPage extends StatelessWidget {
   const DeleteAccountPage({Key? key}) : super(key: key);

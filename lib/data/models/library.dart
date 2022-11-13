@@ -6,7 +6,8 @@ class Library extends Equatable {
     required this.name,
     required this.owner,
     required this.createdDate,
-    required this.permissions
+    required this.permissions,
+    required this.bookCount
   });
 
   final int id;
@@ -14,20 +15,23 @@ class Library extends Equatable {
   final String owner;
   final DateTime createdDate;
   final int permissions;
+  final int bookCount;
 
   Library.fromJson(Map json)
-      : id = json['id'],
-        name = json['name'],
-        owner = json['owner'],
-        createdDate = DateTime.parse(json['createdDate']),
-        permissions = json['permissions'];
+      : id = json['library']['id'],
+        name = json['library']['name'],
+        owner = json['library']['owner'],
+        createdDate = DateTime.parse(json['library']['createdDate']),
+        permissions = json['library']['permissions'],
+        bookCount = json['bookCount'];
 
   toJson() => {
     'ID': id,
     'Name': name,
     'Owner': owner,
     'CreatedDate': createdDate,
-    'Permissions': permissions
+    'Permissions': permissions,
+    'BookCount': bookCount
   };
 
   String get permissionsName {
@@ -44,5 +48,5 @@ class Library extends Equatable {
   }
 
   @override
-  List<Object?> get props => [id, name, owner, createdDate, permissions];
+  List<Object?> get props => [id, name, owner, createdDate, permissions, bookCount];
 }

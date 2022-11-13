@@ -52,6 +52,8 @@ class BooksState extends Equatable {
         case QueryType.author:
           filteredBooks = filteredBooks.where((b) => b.authors.any((a) => a.displayName.toLowerCase().contains(normalizedSearchTerm))).toList();
           break;
+        case QueryType.tag:
+          filteredBooks = filteredBooks.where((b) => b.tags.any((t) => t.name.toLowerCase().contains(normalizedSearchTerm))).toList();
       }
     }
     switch(query.sortType){

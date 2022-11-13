@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:library_app/data/models/models.dart';
 
+enum CollectionMenu{ edit, delete }
+
 class CollectionTile extends StatelessWidget {
   const CollectionTile({
     Key? key,
@@ -28,7 +30,7 @@ class CollectionTile extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: SizedBox(
               width: 400,
-              height: 100,
+              height: 120,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -50,33 +52,56 @@ class CollectionTile extends StatelessWidget {
                                   fontSize: 12
                               )
                           ),
+                          Text('${collection.bookCount} ${collection.bookCount == 1 ? 'Book' : 'Books'}',
+                            style: const TextStyle(
+                              fontStyle: FontStyle.italic
+                            )
+                          )
                         ],
                       ),
                     ),
                   ),
-                  if(library.permissions > 1) SizedBox(
-                    width: 50,
-                    height: 90,
-                    child: IconButton(
-                      icon: const Icon(
-                        CupertinoIcons.pencil,
-                        size: 36,
-                        semanticLabel: 'edit collection details',
+                  if(library.permissions > 1) PopupMenuButton(
+                    itemBuilder: (BuildContext context) => <PopupMenuEntry<CollectionMenu>>[
+                      if(library.permissions > 1) PopupMenuItem<CollectionMenu>(
+                        value: CollectionMenu.edit,
+                        child: Row(
+                          children: const [
+                            Icon(
+                              CupertinoIcons.pencil,
+                              size: 36,
+                              semanticLabel: 'edit collection details',
+                            ),
+                            Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
+                            Text('Edit')
+                          ],
+                        )
                       ),
-                      onPressed: onEditCollection,
-                    ),
-                  ),
-                  if(library.permissions > 1 && collection.isUserModifiable) SizedBox(
-                    width: 50,
-                    height: 90,
-                    child: IconButton(
-                      icon: const Icon(
-                        CupertinoIcons.trash_fill,
-                        size: 36,
-                        semanticLabel: 'delete collection',
-                      ),
-                      onPressed: onDeleteCollection,
-                    ),
+                      if(library.permissions > 1 && collection.isUserModifiable) PopupMenuItem<CollectionMenu>(
+                        value: CollectionMenu.delete,
+                        child: Row(
+                          children: const [
+                            Icon(
+                              CupertinoIcons.trash_fill,
+                              size: 36,
+                              semanticLabel: 'delete collection',
+                            ),
+                            Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
+                            Text('Delete')
+                          ],
+                        ),
+                      )
+                    ],
+                    onSelected: (CollectionMenu item) {
+                      switch(item){
+                        case CollectionMenu.edit:
+                          onEditCollection?.call();
+                          break;
+                        case CollectionMenu.delete:
+                          onDeleteCollection?.call();
+                          break;
+                      }
+                    },
                   )
                 ],
               )

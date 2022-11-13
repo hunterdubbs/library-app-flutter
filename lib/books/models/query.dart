@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-enum QueryType { title, author }
+enum QueryType { title, author, tag }
 enum SortType { alphabetic, dateAddedNewest, dateAddedOldest }
 
 class Query extends Equatable {
@@ -35,7 +35,8 @@ class QueryMappings {
 
   static Map<String, QueryType> get queryTypeMappings => {
     'Search By Title': QueryType.title,
-    'Search By Author': QueryType.author
+    'Search By Author': QueryType.author,
+    'Search By Tag': QueryType.tag
   };
 
   static Map<String, SortType> get sortTypeMappings => {

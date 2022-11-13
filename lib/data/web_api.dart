@@ -56,6 +56,10 @@ class WebApi {
     _authRepository.clear();
   }
 
+  Future<Auth?> getAuth() async {
+    return _authRepository.auth;
+  }
+
   Future<Response> getRequest({
     required Uri uri,
     required Map<String, String> headers,

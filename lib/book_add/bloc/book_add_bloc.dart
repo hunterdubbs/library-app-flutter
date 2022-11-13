@@ -22,6 +22,8 @@ class BookAddBloc extends Bloc<BookAddEvent, BookAddState> {
       on<Submitted>(_onSubmitted);
       on<AuthorAdded>(_onAuthorAdded);
       on<AuthorRemoved>(_onAuthorRemoved);
+      on<TagAdded>(_onTagAdded);
+      on<TagRemoved>(_onTagRemoved);
   }
 
   final LibraryApi _libraryApi;
@@ -67,9 +69,9 @@ class BookAddBloc extends Bloc<BookAddEvent, BookAddState> {
       emit(state.copyWith(status: FormzStatus.submissionInProgress));
       try{
         if(state.isEdit){
-          await _libraryApi.modifyBook(libraryId: state.libraryId, bookId: state.bookId, title: state.title.value, synopsis: state.synopsis.value, datePublished: state.datePublished.value, authors: state.authors);
+          await _libraryApi.modifyBook(libraryId: state.libraryId, bookId: state.bookId, title: state.title.value, synopsis: state.synopsis.value, datePublished: state.datePublished.value, authors: state.authors, tags: state.tags);
         }else{
-          await _libraryApi.createBookInCollection(libraryId: state.libraryId, collectionId: state.collectionId, title: state.title.value, synopsis: state.synopsis.value, datePublished: state.datePublished.value, authors: state.authors);
+          await _libraryApi.createBookInCollection(libraryId: state.libraryId, collectionId: state.collectionId, title: state.title.value, synopsis: state.synopsis.value, datePublished: state.datePublished.value, authors: state.authors, tags: state.tags);
         }
         emit(state.copyWith(status: FormzStatus.submissionSuccess));
       }
@@ -95,5 +97,23 @@ class BookAddBloc extends Bloc<BookAddEvent, BookAddState> {
       ) {
     state.authors.removeWhere((a) => a.id == event.authorId);
     emit(state.copyWith(authors: state.authors));
+  }
+
+  void _onTagAdded(
+      TagAdded event,
+      Emitter<BookAddState> emit
+      ) {
+    if(!state.tags.any((t) => t.id == event.tag.id)){
+      state.tags.add(event.tag);
+      emit(state.copyWith(tags: state.tags));
+    }
+  }
+
+  void _onTagRemoved(
+      TagRemoved event,
+      Emitter<BookAddState> emit
+      ) {
+    state.tags.removeWhere((t) => t.id == event.tagId);
+    emit(state.copyWith(tags: state.tags));
   }
 }

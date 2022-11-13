@@ -13,7 +13,7 @@ class AuthenticationApi extends WebApi {
   final _controller = StreamController<AuthenticationStatus>();
 
   Stream<AuthenticationStatus> get status async* {
-    yield AuthenticationStatus.unauthenticated;
+    yield await getInitialStatus();
     yield* _controller.stream;
   }
 
@@ -112,6 +112,22 @@ class AuthenticationApi extends WebApi {
   void logOut(){
     clearAuth();
     _controller.add(AuthenticationStatus.unauthenticated);
+  }
+
+  Future<AuthenticationStatus> getInitialStatus() async {
+    final Auth? auth = await getAuth();
+    if(auth != null) {
+      try{
+        final response = await getRequest(
+          uri: buildUri('identity/testauth'),
+          headers: await buildHeaderWithAuth()
+        );
+        if(response.statusCode == 200){
+          return AuthenticationStatus.authenticated;
+        }
+      }catch(_) {}
+    }
+    return AuthenticationStatus.unauthenticated;
   }
 
   void dispose() => _controller.close();
