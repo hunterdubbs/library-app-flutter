@@ -73,3 +73,12 @@ class TagRemoved extends BookAddEvent {
 class Submitted extends BookAddEvent{
   const Submitted();
 }
+
+class DetailsReturned extends BookAddEvent {
+  const DetailsReturned(this.details);
+
+  final BookLookupDetails details;
+
+  @override
+  List<Object> get props => [details];
+}

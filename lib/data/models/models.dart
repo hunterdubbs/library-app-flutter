@@ -9,3 +9,4 @@ export 'invite.dart';
 export 'full_library_permission.dart';
 export 'account_info.dart';
 export 'tag.dart';
+export 'book_lookup_details.dart';

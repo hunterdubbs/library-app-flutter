@@ -24,6 +24,7 @@ class BookAddBloc extends Bloc<BookAddEvent, BookAddState> {
       on<AuthorRemoved>(_onAuthorRemoved);
       on<TagAdded>(_onTagAdded);
       on<TagRemoved>(_onTagRemoved);
+      on<DetailsReturned>(_detailsReturned);
   }
 
   final LibraryApi _libraryApi;
@@ -115,5 +116,22 @@ class BookAddBloc extends Bloc<BookAddEvent, BookAddState> {
       ) {
     state.tags.removeWhere((t) => t.id == event.tagId);
     emit(state.copyWith(tags: state.tags));
+  }
+
+  void _detailsReturned(
+      DetailsReturned event,
+      Emitter<BookAddState> emit
+      ) {
+    final title = Title.dirty(event.details.title);
+    final synopsis = Synopsis.dirty(event.details.description);
+    final datePublished = DatePublished.dirty(event.details.publishedDate);
+
+    emit(state.copyWith(
+      title: title,
+      synopsis: synopsis,
+      datePublished: datePublished,
+      authors: event.details.authors,
+      status: Formz.validate([title, synopsis, datePublished])
+    ));
   }
 }

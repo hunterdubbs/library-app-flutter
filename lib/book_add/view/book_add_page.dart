@@ -7,6 +7,7 @@ import 'package:library_app/book_add/bloc/book_add_bloc.dart';
 import 'package:library_app/book_add/models/models.dart';
 import 'package:library_app/data/library_api.dart';
 import 'package:library_app/data/models/models.dart';
+import 'package:library_app/isbn_lookup/view/isbn_lookup_page.dart';
 import 'package:library_app/tags/view/tags_page.dart';
 import 'package:library_app/widgets/widgets.dart';
 
@@ -49,6 +50,31 @@ class BookAddPage extends StatelessWidget{
         },
         child: Column(
           children: [
+            Align(
+              alignment: Alignment.topRight,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                child: BlocBuilder<BookAddBloc, BookAddState>(
+                    builder: (context, state) {
+                      return ElevatedButton(
+                        onPressed: state.isEdit ? null : () {
+                          Navigator.of(context).push<BookLookupDetails?>(
+                              IsbnLookupPage.route()).then((details) {
+                            if (details != null) {
+                              context.read<BookAddBloc>().add(DetailsReturned(details));
+                            }
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                            minimumSize: const Size(150, 50)
+                        ),
+                        child: const Text('Quick Add'),
+                      );
+                    }
+                )
+              )
+            ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(20),

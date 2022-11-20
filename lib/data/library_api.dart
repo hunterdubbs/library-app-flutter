@@ -501,6 +501,20 @@ class LibraryApi extends WebApi{
       throw Exception();
     }
   }
+  
+  Future<BookLookupDetails> lookupByISBN({required String isbn}) async {
+    final response = await getRequest(
+      uri: buildUri('book/lookup/isbn/$isbn'),
+      headers: await buildHeaderWithAuth()
+    );
+    if(response.statusCode == 200){
+      final json = jsonDecode(response.body);
+      BookLookupDetails result = BookLookupDetails.fromJson(json);
+      return result;
+    }else{
+      throw Exception();
+    }
+  } 
 }
 
 class LibraryNotFoundException implements Exception {}
