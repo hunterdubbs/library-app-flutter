@@ -53,7 +53,7 @@ android {
         applicationId "com.basedpenguin.library.app"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-build-configuration.
-        minSdkVersion 19
+        minSdkVersion 21
         compileSdkVersion 33
         targetSdkVersion flutter.targetSdkVersion
         versionCode 1

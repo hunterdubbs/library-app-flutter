@@ -1,3 +1,5 @@
+import 'package:barcode_scan2/barcode_scan2.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -53,7 +55,37 @@ class IsbnLookupPage extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      _IsbnInput()
+                      _IsbnInput(),
+                      const Padding(padding: EdgeInsets.symmetric(vertical: 30)),
+                      ElevatedButton(
+                        onPressed: () async {
+                          BarcodeScanner.scan(
+                            options: const ScanOptions(
+                              restrictFormat: [BarcodeFormat.ean13]
+                            )
+                          ).then((barcodeResult) {
+                            if(barcodeResult.type == ResultType.Barcode) {
+                              context.read<IsbnLookupBloc>().add(IsbnChanged(barcodeResult.rawContent));
+                            }
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                          minimumSize: const Size.fromHeight(50)
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Text('Scan Barcode'),
+                            Padding(padding: EdgeInsets.symmetric(horizontal: 20)),
+                            Icon(
+                              CupertinoIcons.camera,
+                              size: 36,
+                              semanticLabel: 'camera',
+                            )
+                          ],
+                        ),
+                      )
                     ],
                   )
                 )
