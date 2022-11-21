@@ -1,3 +1,4 @@
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -98,7 +99,7 @@ class _FirstNameInput extends StatelessWidget {
         buildWhen: (previous, current) => previous.firstName != current.firstName,
         builder: (context, state) {
           return TextField(
-            onChanged: (firstName) => context.read<AuthorAddBloc>().add(FirstNameChanged(firstName)),
+            onChanged: (firstName) => EasyDebounce.debounce('author_add_first', const Duration(milliseconds: 500), ()=> context.read<AuthorAddBloc>().add(FirstNameChanged(firstName))),
             decoration: InputDecoration(
                 labelText: 'First Name',
                 errorText: _getError(state.firstName.error)
@@ -129,7 +130,7 @@ class _LastNameInput extends StatelessWidget {
         buildWhen: (previous, current) => previous.lastName != current.lastName,
         builder: (context, state) {
           return TextField(
-            onChanged: (lastName) => context.read<AuthorAddBloc>().add(LastNameChanged(lastName)),
+            onChanged: (lastName) => EasyDebounce.debounce('author_add_last', const Duration(milliseconds: 500), ()=> context.read<AuthorAddBloc>().add(LastNameChanged(lastName))),
             decoration: InputDecoration(
                 labelText: 'Last Name',
                 errorText: _getError(state.lastName.error)

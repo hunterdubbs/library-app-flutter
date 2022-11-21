@@ -1,3 +1,4 @@
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -132,7 +133,7 @@ class _QueryInput extends StatelessWidget{
       buildWhen: (previous, current) => previous.query != current.query,
       builder: (context, state) {
         return TextField(
-          onChanged: (query) => context.read<AuthorSearchBloc>().add(QueryChanged(query)),
+          onChanged: (query) => EasyDebounce.debounce('author_search_query', const Duration(milliseconds: 500), () => context.read<AuthorSearchBloc>().add(QueryChanged(query))),
           decoration: InputDecoration(
             hintText: 'Search by Author Name',
             errorText: _getError(state.query.error)

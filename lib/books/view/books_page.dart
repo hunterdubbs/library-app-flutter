@@ -1,3 +1,4 @@
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -96,7 +97,7 @@ class BooksPage extends StatelessWidget {
                       Expanded(
                         child: TextField(
                           controller: searchController,
-                          onChanged: (query) => context.read<BooksBloc>().add(QueryTextChanged(query)),
+                          onChanged: (query) => EasyDebounce.debounce('book_search_query', const Duration(milliseconds: 500), () => context.read<BooksBloc>().add(QueryTextChanged(query))),
                           decoration: const InputDecoration(
                             hintText: 'Search'
                           ),

@@ -1,3 +1,4 @@
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -120,7 +121,7 @@ class _EmailInput extends StatelessWidget {
       buildWhen: (previous, current) => previous.email != current.email,
       builder: (context, state) {
         return TextField(
-          onChanged: (email) => context.read<RequestPasswordResetBloc>().add(EmailChanged(email)),
+          onChanged: (email) => EasyDebounce.debounce('request_password_reset_email', const Duration(milliseconds: 500), () => context.read<RequestPasswordResetBloc>().add(EmailChanged(email))),
           decoration: InputDecoration(
               labelText: 'email',
               errorText: _getError(state.email.error)

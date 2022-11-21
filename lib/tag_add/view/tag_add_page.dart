@@ -1,3 +1,4 @@
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -96,9 +97,9 @@ class _NameInput extends StatelessWidget {
         buildWhen: (previous, current) => previous.name != current.name,
         builder: (context, state) {
           return TextField(
-            onChanged: (firstName) => context.read<TagAddBloc>().add(NameChanged(firstName)),
+            onChanged: (name) => EasyDebounce.debounce('tag_add_name', const Duration(milliseconds: 500), () => context.read<TagAddBloc>().add(NameChanged(name))),
             decoration: InputDecoration(
-                labelText: 'First Name',
+                labelText: 'Tag Name',
                 errorText: _getError(state.name.error)
             ),
             maxLength: 30,

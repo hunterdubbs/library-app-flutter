@@ -1,3 +1,4 @@
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -90,7 +91,7 @@ class _NameInput extends StatelessWidget {
       buildWhen: (previous, current) => previous.name != current.name,
       builder: (context, state) {
         return TextField(
-          onChanged: (name) => context.read<LibraryAddBloc>().add(NameChanged(name)),
+          onChanged: (name) => EasyDebounce.debounce('library_add_name', const Duration(milliseconds: 500), () => context.read<LibraryAddBloc>().add(NameChanged(name))),
           decoration: InputDecoration(
             labelText: 'Name',
             hintText: 'Your library name',

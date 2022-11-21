@@ -18,6 +18,7 @@ dependencies:
   intl: ^0.17.0
   email_validator: ^2.1.17
   barcode_scan2: ^4.2.1
+  easy_debounce: ^2.0.2
 
 dev_dependencies:
   flutter_test:

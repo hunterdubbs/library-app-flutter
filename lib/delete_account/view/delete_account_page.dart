@@ -1,3 +1,4 @@
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -144,7 +145,7 @@ class _PasswordInput extends StatelessWidget {
       buildWhen: (previous, current) => previous.password != current.password,
       builder: (context, state) {
         return TextField(
-          onChanged: (password) => context.read<DeleteAccountBloc>().add(PasswordChanged(password)),
+          onChanged: (password) => EasyDebounce.debounce('delete_account_password', const Duration(milliseconds: 500), () => context.read<DeleteAccountBloc>().add(PasswordChanged(password))),
           decoration: InputDecoration(
               labelText: 'password',
               errorText: _getError(state.password.error)

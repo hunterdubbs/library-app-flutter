@@ -1,3 +1,4 @@
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -138,7 +139,7 @@ class _TitleInput extends StatelessWidget{
         controller.selection = TextSelection.fromPosition(TextPosition(offset: controller.text.length));
         return TextField(
           controller: controller,
-          onChanged: (title) => context.read<BookAddBloc>().add(TitleChanged(title)),
+          onChanged: (title) => EasyDebounce.debounce('book_add_title', const Duration(milliseconds: 500), () => context.read<BookAddBloc>().add(TitleChanged(title))),
           decoration: InputDecoration(
             labelText: 'Title',
             hintText: 'Enter Title',
@@ -173,7 +174,8 @@ class _SynopsisInput extends StatelessWidget{
         controller.selection = TextSelection.fromPosition(TextPosition(offset: controller.text.length));
         return TextField(
           controller: controller,
-          onChanged: (synopsis) => context.read<BookAddBloc>().add(SynopsisChanged(synopsis)),
+          //onChanged: (synopsis) => context.read<BookAddBloc>().add(SynopsisChanged(synopsis)),
+          onChanged: (synopsis) => EasyDebounce.debounce('book_add_synopsis', const Duration(milliseconds: 500), () => context.read<BookAddBloc>().add(SynopsisChanged(synopsis))),
           minLines: 1,
           maxLines: 10,
           decoration: InputDecoration(

@@ -1,4 +1,5 @@
 import 'package:barcode_scan2/barcode_scan2.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -131,7 +132,7 @@ class _IsbnInput extends StatelessWidget {
           controller.selection = TextSelection.fromPosition(TextPosition(offset: controller.text.length));
           return TextField(
             controller: controller,
-            onChanged: (isbn) => context.read<IsbnLookupBloc>().add(IsbnChanged(isbn)),
+            onChanged: (isbn) => EasyDebounce.debounce('isbn_lookup_isbn', const Duration(milliseconds: 500), () => context.read<IsbnLookupBloc>().add(IsbnChanged(isbn))),
             decoration: InputDecoration(
                 labelText: 'ISBN',
                 hintText: 'ISBN-10 / ISBN-13 no spaces or hyphens',

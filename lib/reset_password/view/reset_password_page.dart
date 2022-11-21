@@ -1,3 +1,4 @@
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -112,7 +113,7 @@ class _EmailInput extends StatelessWidget {
         controller.selection = TextSelection.fromPosition(TextPosition(offset: controller.text.length));
         return TextField(
         controller: controller,
-          onChanged: (email) => context.read<ResetPasswordBloc>().add(EmailChanged(email)),
+          onChanged: (email) => EasyDebounce.debounce('reset_password_email', const Duration(milliseconds: 500), () => context.read<ResetPasswordBloc>().add(EmailChanged(email))),
           decoration: InputDecoration(
               labelText: 'email',
               errorText: _getError(state.email.error)
@@ -145,7 +146,7 @@ class _CodeInput extends StatelessWidget {
       buildWhen: (previous, current) => previous.code != current.code,
       builder: (context, state) {
         return TextField(
-          onChanged: (code) => context.read<ResetPasswordBloc>().add(CodeChanged(code)),
+          onChanged: (code) => EasyDebounce.debounce('reset_password_code', const Duration(milliseconds: 500), () => context.read<ResetPasswordBloc>().add(CodeChanged(code))),
           decoration: InputDecoration(
             labelText: 'reset code',
             errorText: _getError(state.code.error)
@@ -176,7 +177,7 @@ class _PasswordInput extends StatelessWidget {
       buildWhen: (previous, current) => previous.password != current.password,
       builder: (context, state) {
         return TextField(
-          onChanged: (password) => context.read<ResetPasswordBloc>().add(PasswordChanged(password)),
+          onChanged: (password) => EasyDebounce.debounce('reset_password_password', const Duration(milliseconds: 500), () => context.read<ResetPasswordBloc>().add(PasswordChanged(password))),
           decoration: InputDecoration(
               labelText: 'password',
               errorText: _getError(state.password.error)

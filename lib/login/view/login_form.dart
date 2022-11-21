@@ -1,3 +1,4 @@
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -51,8 +52,7 @@ class _UsernameInput extends StatelessWidget {
       builder: (context, state) {
         return TextField(
           key: const Key('loginForm_usernameInput_textField'),
-          onChanged: (username) =>
-              context.read<LoginBloc>().add(LoginUsernameChanged(username)),
+          onChanged: (username) => EasyDebounce.debounce('login_username', const Duration(milliseconds: 500), () => context.read<LoginBloc>().add(LoginUsernameChanged(username))),
           decoration: InputDecoration(
             labelText: 'username',
             errorText: state.username.invalid ? 'invalid username' : null
@@ -71,8 +71,7 @@ class _PasswordInput extends StatelessWidget {
       builder: (context, state) {
         return TextField(
           key: const Key('loginForm_passwordInput_textField'),
-          onChanged: (password) =>
-              context.read<LoginBloc>().add(LoginPasswordChanged(password)),
+          onChanged: (password) => EasyDebounce.debounce('login_password', const Duration(milliseconds: 500), () => context.read<LoginBloc>().add(LoginPasswordChanged(password))),
           obscureText: true,
           decoration: InputDecoration(
             labelText: 'password',
