@@ -100,20 +100,22 @@ class AuthorSearchPage extends StatelessWidget{
                 if(state.results.isEmpty){
                   return const Expanded(child: Center(child: Text("No results found")));
                 }
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: CupertinoScrollbar(
-                    child: ListView(
-                      shrinkWrap: true,
-                      children: [
-                        for(final author in state.results)
-                          AuthorTile(
-                            author: author,
-                            onTap: () {
-                              Navigator.of(context).pop(author);
-                            }
-                          )
-                      ],
+                return Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: CupertinoScrollbar(
+                      child: ListView(
+                        shrinkWrap: true,
+                        children: [
+                          for(final author in state.results)
+                            AuthorTile(
+                              author: author,
+                              onTap: () {
+                                Navigator.of(context).pop(author);
+                              }
+                            )
+                        ],
+                      ),
                     ),
                   ),
                 );

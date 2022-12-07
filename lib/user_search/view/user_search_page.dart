@@ -101,41 +101,43 @@ class UserSearchPage extends StatelessWidget {
                 if(state.results.isEmpty){
                   return const Expanded(child: Center(child: Text('No results found')));
                 }
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: CupertinoScrollbar(
-                    child: ListView(
-                      shrinkWrap: true,
-                      children: [
-                        for(final user in state.results)
-                          UserTile(
-                            user: user,
-                            onTap: () {
-                              showDialog<int?>(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return SimpleDialog(
-                                    title: const Text('Invite User as'),
-                                    children: [
-                                      SimpleDialogOption(
-                                        onPressed: () => Navigator.of(context).pop(1),
-                                        child: const Text('View Only')
-                                      ),
-                                      SimpleDialogOption(
-                                        onPressed: () => Navigator.of(context).pop(2),
-                                        child: const Text('Editor')
-                                      )
-                                    ],
-                                  );
-                                }
-                              ).then((permissionLevel) {
-                                if(permissionLevel != null){
-                                  context.read<UserSearchBloc>().add(InviteUser(user, permissionLevel));
-                                }
-                              });
-                            }
-                          )
-                      ],
+                return Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: CupertinoScrollbar(
+                      child: ListView(
+                        shrinkWrap: true,
+                        children: [
+                          for(final user in state.results)
+                            UserTile(
+                              user: user,
+                              onTap: () {
+                                showDialog<int?>(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return SimpleDialog(
+                                      title: const Text('Invite User as'),
+                                      children: [
+                                        SimpleDialogOption(
+                                          onPressed: () => Navigator.of(context).pop(1),
+                                          child: const Text('View Only')
+                                        ),
+                                        SimpleDialogOption(
+                                          onPressed: () => Navigator.of(context).pop(2),
+                                          child: const Text('Editor')
+                                        )
+                                      ],
+                                    );
+                                  }
+                                ).then((permissionLevel) {
+                                  if(permissionLevel != null){
+                                    context.read<UserSearchBloc>().add(InviteUser(user, permissionLevel));
+                                  }
+                                });
+                              }
+                            )
+                        ],
+                      ),
                     ),
                   ),
                 );

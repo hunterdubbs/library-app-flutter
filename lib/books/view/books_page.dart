@@ -160,66 +160,68 @@ class BooksPage extends StatelessWidget {
                     ],
                   )
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: CupertinoScrollbar(
-                    child: RefreshIndicator(
-                        onRefresh: () async {
-                          context.read<BooksBloc>().add(const LoadBooksEvent());
-                        },
-                      child: ListView(
-                        shrinkWrap: true,
-                        children: [
-                          for(final book in state.filteredBooks)
-                            BookTile(
-                              library: state.library,
-                              book: book,
-                              onTap: () {
-                                Navigator.of(context).push(BookDetailsPage.route(book: book, library: state.library));
-                              },
-                              onEditBook: () {
-                                Navigator.of(context).push<bool?>(BookAddPage.route(
-                                    libraryId: state.library.id,
-                                    collectionId: state.collection.id,
-                                    book: book)).then((refresh) {
-                                      if(refresh != null && refresh == true){
-                                        Navigator.of(context).pushReplacement(BooksPage.route(library: state.library, collection: state.collection));
-                                      }
-                                });
-                              },
-                              onDeleteBook: (){
-                                showDialog<bool>(
-                                    context: context,
-                                    builder: (BuildContext context) =>
-                                        AlertDialog(
-                                          title: const Text('Delete Book?'),
-                                          content: const Text('Are you sure you want to delete this book?'),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () => Navigator.of(context).pop(false),
-                                              child: const Text('Cancel'),
-                                            ),
-                                            TextButton(
-                                                onPressed: () {
-                                                  Navigator.of(context).pop(true);
-                                                },
-                                                child: const Text('Delete')
-                                            )
-                                          ],
-                                        )
-                                ).then((confirmed) {
-                                  if(confirmed != null && confirmed == true){
-                                    context.read<BooksBloc>().add(BookDeletedEvent(book.id));
-                                  }
-                                });
-                              },
-                              onEditCollections: (){
-                                Navigator.of(context).push(BookCollectionsPage.route(book: book));
-                              },
-                            )
-                        ],
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: CupertinoScrollbar(
+                      child: RefreshIndicator(
+                          onRefresh: () async {
+                            context.read<BooksBloc>().add(const LoadBooksEvent());
+                          },
+                        child: ListView(
+                          shrinkWrap: false,
+                          children: [
+                            for(final book in state.filteredBooks)
+                              BookTile(
+                                library: state.library,
+                                book: book,
+                                onTap: () {
+                                  Navigator.of(context).push(BookDetailsPage.route(book: book, library: state.library));
+                                },
+                                onEditBook: () {
+                                  Navigator.of(context).push<bool?>(BookAddPage.route(
+                                      libraryId: state.library.id,
+                                      collectionId: state.collection.id,
+                                      book: book)).then((refresh) {
+                                        if(refresh != null && refresh == true){
+                                          Navigator.of(context).pushReplacement(BooksPage.route(library: state.library, collection: state.collection));
+                                        }
+                                  });
+                                },
+                                onDeleteBook: (){
+                                  showDialog<bool>(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          AlertDialog(
+                                            title: const Text('Delete Book?'),
+                                            content: const Text('Are you sure you want to delete this book?'),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () => Navigator.of(context).pop(false),
+                                                child: const Text('Cancel'),
+                                              ),
+                                              TextButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop(true);
+                                                  },
+                                                  child: const Text('Delete')
+                                              )
+                                            ],
+                                          )
+                                  ).then((confirmed) {
+                                    if(confirmed != null && confirmed == true){
+                                      context.read<BooksBloc>().add(BookDeletedEvent(book.id));
+                                    }
+                                  });
+                                },
+                                onEditCollections: (){
+                                  Navigator.of(context).push(BookCollectionsPage.route(book: book));
+                                },
+                              )
+                          ],
+                        )
                       )
-                    )
+                    ),
                   ),
                 ),
               ],
