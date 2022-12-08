@@ -46,8 +46,10 @@ class BookTile extends StatelessWidget {
                           Text(book.title,
                               style: const TextStyle(
                                   fontSize: 18,
-                                  fontWeight: FontWeight.w500
-                              )
+                                  fontWeight: FontWeight.w500,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: book.authors.isNotEmpty || book.tags.isNotEmpty ? 1 : 2,
                           ),
                           if(book.authors.isNotEmpty) Text('${book.authors.first.displayName} ${book.authors.length > 1 ? '( +${book.authors.length - 1} more)' : ''}',
                               style: const TextStyle(

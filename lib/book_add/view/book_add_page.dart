@@ -192,8 +192,6 @@ class _SynopsisInput extends StatelessWidget{
   String? _getError(SynopsisValidationError? error){
     if(error != null){
       switch(error){
-        case SynopsisValidationError.empty:
-          return 'synopsis required';
         case SynopsisValidationError.length:
           return 'synopsis too long';
       }

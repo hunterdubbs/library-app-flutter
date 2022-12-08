@@ -1,6 +1,6 @@
 import 'package:formz/formz.dart';
 
-enum SynopsisValidationError { empty, length }
+enum SynopsisValidationError { length }
 
 class Synopsis extends FormzInput<String, SynopsisValidationError>{
   const Synopsis.pure() : super.pure('');
@@ -8,8 +8,7 @@ class Synopsis extends FormzInput<String, SynopsisValidationError>{
 
   @override
   SynopsisValidationError? validator(String? value) {
-    if(value == null || value.isEmpty) return SynopsisValidationError.empty;
-    if(value.length > 1023) return SynopsisValidationError.length;
+    if(value != null && value.length > 1023) return SynopsisValidationError.length;
     return null;
   }
 }

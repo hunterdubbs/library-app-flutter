@@ -110,8 +110,6 @@ class _NameInput extends StatelessWidget {
           return 'name required';
         case LibraryNameValidationError.length:
           return '80 chars max';
-        case LibraryNameValidationError.specialChars:
-          return 'only alphanumeric characters allowed';
       }
     }
     return null;

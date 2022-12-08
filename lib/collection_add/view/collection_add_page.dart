@@ -122,8 +122,6 @@ class _NameInput extends StatelessWidget {
           return 'name required';
         case CollectionNameValidationError.length:
           return '80 chars max';
-        case CollectionNameValidationError.specialChars:
-          return 'only alphanumeric characters allowed';
       }
     }
     return null;
@@ -155,12 +153,8 @@ class _DescriptionInput extends StatelessWidget {
   String? _getError(CollectionDescriptionValidationError? error){
     if(error != null) {
       switch (error) {
-        case CollectionDescriptionValidationError.empty:
-          return 'description required';
         case CollectionDescriptionValidationError.length:
           return '80 chars max';
-        case CollectionDescriptionValidationError.specialChars:
-          return 'only alphanumeric characters allowed';
       }
     }
     return null;

@@ -23,6 +23,7 @@ class CollectionTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      clipBehavior: Clip.hardEdge,
       child: InkWell(
         splashColor: Colors.blue.withAlpha(20),
         onTap: onTap,
@@ -44,13 +45,17 @@ class CollectionTile extends StatelessWidget {
                           Text(collection.name,
                               style: const TextStyle(
                                   fontSize: 18,
-                                  fontWeight: FontWeight.w500
-                              )
+                                  fontWeight: FontWeight.w500,
+                              ),
+                            overflow: TextOverflow.fade,
+                            maxLines: collection.description.isNotEmpty ? 2 : 2,
                           ),
                           Text(collection.description,
                               style: const TextStyle(
                                   fontSize: 12
-                              )
+                              ),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
                           ),
                           Text('${collection.bookCount} ${collection.bookCount == 1 ? 'Book' : 'Books'}',
                             style: const TextStyle(

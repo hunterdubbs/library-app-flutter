@@ -46,6 +46,8 @@ class LibraryTile extends StatelessWidget {
                             fontSize: 18,
                             fontWeight: FontWeight.w500
                           ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
                         ),
                         Text('${library.bookCount} ${library.bookCount == 1 ? 'Book' : 'Books'}',
                             style: const TextStyle(
