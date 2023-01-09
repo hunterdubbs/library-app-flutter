@@ -12,6 +12,8 @@ class BookAddState extends Equatable {
     required this.datePublished,
     required this.authors,
     required this.tags,
+    this.series = const Series.pure(),
+    this.volume = const Volume.pure(),
     this.rev = 0
   });
 
@@ -25,6 +27,8 @@ class BookAddState extends Equatable {
   final DatePublished datePublished;
   final List<Author> authors;
   final List<Tag> tags;
+  final Series series;
+  final Volume volume;
   final int rev;
 
   static BookAddState initial({
@@ -43,7 +47,9 @@ class BookAddState extends Equatable {
         synopsis: Synopsis.dirty(book.synopsis),
         datePublished: DatePublished.dirty(book.publishedDate),
         authors: book.authors,
-        tags: book.tags
+        tags: book.tags,
+        series: Series.dirty(book.series),
+        volume: Volume.dirty(book.volume)
       );
     }else{
       return BookAddState(libraryId: libraryID, collectionId: collectionID, datePublished: DatePublished.pure(), authors: <Author>[], tags: <Tag>[]);
@@ -60,7 +66,9 @@ class BookAddState extends Equatable {
     Synopsis? synopsis,
     DatePublished? datePublished,
     List<Author>? authors,
-    List<Tag>? tags
+    List<Tag>? tags,
+    Series? series,
+    Volume? volume
   }) {
     return BookAddState(
       status: status ?? this.status,
@@ -73,10 +81,12 @@ class BookAddState extends Equatable {
       datePublished: datePublished ?? this.datePublished,
       authors: authors ?? this.authors,
       tags: tags ?? this.tags,
+      series: series ?? this.series,
+      volume: volume ?? this.volume,
       rev: rev + 1
     );
   }
 
   @override
-  List<Object> get props => [status, libraryId, collectionId, bookId, isEdit, title, synopsis, datePublished, authors, tags, rev];
+  List<Object> get props => [status, libraryId, collectionId, bookId, isEdit, title, synopsis, datePublished, authors, tags, series, volume, rev];
 }

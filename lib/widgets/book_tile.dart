@@ -32,7 +32,7 @@ class BookTile extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: SizedBox(
               width: 400,
-              height: 100,
+              height: 120,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -55,6 +55,11 @@ class BookTile extends StatelessWidget {
                               style: const TextStyle(
                                   fontSize: 12
                               )
+                          ),
+                          if(book.series.isNotEmpty || book.volume.isNotEmpty) Text('${book.series} - Vol. ${book.volume}',
+                            style: const TextStyle(
+                                fontSize: 12
+                            )
                           ),
                           if(book.tags.isNotEmpty) Text('Tags: ${book.tags.map((t) => t.name).join(', ')}',
                             style: const TextStyle(

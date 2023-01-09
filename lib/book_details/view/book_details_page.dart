@@ -47,6 +47,10 @@ class BookDetailsPage extends StatelessWidget {
                       ),
                     ),
                     Text(state.book.authors.join(', ')),
+                    Text('${state.book.series} - Vol. ${state.book.volume}',
+                        style: const TextStyle(
+                            fontStyle: FontStyle.italic
+                        )),
                     const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
                     Text(state.book.synopsis,
                       style: const TextStyle(
