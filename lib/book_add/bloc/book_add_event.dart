@@ -25,6 +25,24 @@ class SynopsisChanged extends BookAddEvent{
   List<Object> get props => [synopsis];
 }
 
+class SeriesChanged extends BookAddEvent{
+  const SeriesChanged(this.series);
+
+  final String series;
+
+  @override
+  List<Object> get props => [series];
+}
+
+class VolumeChanged extends BookAddEvent{
+  const VolumeChanged(this.volume);
+
+  final String volume;
+
+  @override
+  List<Object> get props => [volume];
+}
+
 class DatePublishedChanged extends BookAddEvent{
   const DatePublishedChanged(this.datePublished);
 

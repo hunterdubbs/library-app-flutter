@@ -11,7 +11,9 @@ class Book extends Equatable {
     required this.addedDate,
     required this.publishedDate,
     required this.authors,
-    required this.tags
+    required this.tags,
+    required this.series,
+    required this.volume
   });
 
   final int id;
@@ -22,6 +24,8 @@ class Book extends Equatable {
   final DateTime publishedDate;
   final List<Author> authors;
   final List<Tag> tags;
+  final String series;
+  final String volume;
 
   Book.fromJson(Map json) :
     id = json['id'],
@@ -31,7 +35,9 @@ class Book extends Equatable {
     addedDate = DateTime.parse(json['dateAdded']),
     publishedDate = DateTime.parse(json['datePublished']),
     authors = List<Author>.from(json['authors'].map((i) => Author.fromJson(i))).toList(),
-    tags = List<Tag>.from(json['tags'].map((i) => Tag.fromJson(i))).toList();
+    tags = List<Tag>.from(json['tags'].map((i) => Tag.fromJson(i))).toList(),
+    series = json['series'],
+    volume = json['volume'];
 
   toJson() => {
     'ID': id,
@@ -41,9 +47,11 @@ class Book extends Equatable {
     'DateAdded': addedDate,
     'DatePublished': publishedDate,
     'Authors': authors.map((i) => i.toJson()),
-    'Tags': tags.map((i) => i.toJson())
+    'Tags': tags.map((i) => i.toJson()),
+    'Series': series,
+    'Volume': volume
   };
 
   @override
-  List<Object> get props => [id, libraryId, title, synopsis, addedDate, publishedDate, authors, tags];
+  List<Object> get props => [id, libraryId, title, synopsis, addedDate, publishedDate, authors, tags, series, volume];
 }

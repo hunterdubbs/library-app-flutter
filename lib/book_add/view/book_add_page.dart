@@ -92,7 +92,11 @@ class BookAddPage extends StatelessWidget{
                         const Padding(padding: EdgeInsets.symmetric(horizontal: 12),),
                         _AuthorsInput(),
                         const Padding(padding: EdgeInsets.symmetric(horizontal: 12)),
-                        _TagsInput()
+                        _TagsInput(),
+                        const Padding(padding: EdgeInsets.symmetric(horizontal: 12)),
+                        _SeriesInput(),
+                        const Padding(padding: EdgeInsets.symmetric(horizontal: 12)),
+                        _VolumeInput()
                       ],
                     )
                   ),
@@ -194,6 +198,79 @@ class _SynopsisInput extends StatelessWidget{
       switch(error){
         case SynopsisValidationError.length:
           return 'synopsis too long';
+      }
+    }
+    return null;
+  }
+}
+
+
+class _SeriesInput extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<BookAddBloc, BookAddState>(
+      buildWhen: (previous, current) => previous.series != current.series,
+      builder: (context, state) {
+        final controller = TextEditingController(text: state.series.value);
+        controller.selection = TextSelection.fromPosition(TextPosition(offset: controller.text.length));
+        return TextField(
+          controller: controller,
+          //onChanged: (synopsis) => context.read<BookAddBloc>().add(SynopsisChanged(synopsis)),
+          onChanged: (series) => EasyDebounce.debounce('book_add_series', const Duration(milliseconds: 500), () => context.read<BookAddBloc>().add(SeriesChanged(series))),
+          minLines: 1,
+          maxLines: 10,
+          decoration: InputDecoration(
+              labelText: 'Series',
+              hintText: 'Enter Series',
+              errorText: _getError(state.series.error)
+          ),
+          maxLength: 80,
+        );
+      },
+    );
+  }
+
+  String? _getError(SeriesValidationError? error){
+    if(error != null){
+      switch(error){
+        case SeriesValidationError.length:
+          return 'series too long';
+      }
+    }
+    return null;
+  }
+}
+
+class _VolumeInput extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<BookAddBloc, BookAddState>(
+      buildWhen: (previous, current) => previous.volume != current.volume,
+      builder: (context, state) {
+        final controller = TextEditingController(text: state.volume.value);
+        controller.selection = TextSelection.fromPosition(TextPosition(offset: controller.text.length));
+        return TextField(
+          controller: controller,
+          //onChanged: (synopsis) => context.read<BookAddBloc>().add(SynopsisChanged(synopsis)),
+          onChanged: (volume) => EasyDebounce.debounce('book_add_series', const Duration(milliseconds: 500), () => context.read<BookAddBloc>().add(VolumeChanged(volume))),
+          minLines: 1,
+          maxLines: 10,
+          decoration: InputDecoration(
+              labelText: 'Volume',
+              hintText: 'Enter Volume',
+              errorText: _getError(state.volume.error)
+          ),
+          maxLength: 3,
+        );
+      },
+    );
+  }
+
+  String? _getError(VolumeValidationError? error){
+    if(error != null){
+      switch(error){
+        case VolumeValidationError.length:
+          return 'volume too long';
       }
     }
     return null;

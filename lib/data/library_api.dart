@@ -203,7 +203,9 @@ class LibraryApi extends WebApi{
     required String synopsis,
     required DateTime datePublished,
     required List<Author> authors,
-    required List<Tag> tags
+    required List<Tag> tags,
+    required String series,
+    required String volume
   }) async {
     final response = await postRequest(
       uri: buildUri('book/create'),
@@ -215,7 +217,9 @@ class LibraryApi extends WebApi{
         'datePublished': datePublished.toIso8601String(),
         'collectionID': collectionId,
         'authors': authors.map((i) => i.toJson()).toList(),
-        'tags': tags.map((i) => i.toJson()).toList()
+        'tags': tags.map((i) => i.toJson()).toList(),
+        'series': series,
+        'volume': volume
       })
     );
     if(response.statusCode == 200){
@@ -232,7 +236,9 @@ class LibraryApi extends WebApi{
     required String synopsis,
     required DateTime datePublished,
     required List<Author> authors,
-    required List<Tag> tags
+    required List<Tag> tags,
+    required String series,
+    required String volume
   }) async {
     final response = await postRequest(
       uri: buildUri('book/modify'),
@@ -244,7 +250,9 @@ class LibraryApi extends WebApi{
         'libraryID': libraryId,
         'datePublished': datePublished.toIso8601String(),
         'authors': authors.map((i) => i.toJson()).toList(),
-        'tags': tags.map((i) => i.toJson()).toList()
+        'tags': tags.map((i) => i.toJson()).toList(),
+        'series': series,
+        'volume': volume
       })
     );
     if(response.statusCode == 200){
