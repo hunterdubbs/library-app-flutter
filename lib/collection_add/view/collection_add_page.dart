@@ -103,7 +103,7 @@ class _NameInput extends StatelessWidget {
           controller.selection = TextSelection.fromPosition(TextPosition(offset: controller.text.length));
           return TextField(
             controller: controller,
-            onChanged: (name) => EasyDebounce.debounce('collection_add_name', const Duration(milliseconds: 500), () => context.read<CollectionAddBloc>().add(NameChanged(name))),
+            onChanged: (name) => EasyDebounce.debounce('collection_add_name', const Duration(milliseconds: 300), () => context.read<CollectionAddBloc>().add(NameChanged(name))),
             decoration: InputDecoration(
                 labelText: 'Name',
                 hintText: 'Your collection name',
@@ -138,7 +138,7 @@ class _DescriptionInput extends StatelessWidget {
           controller.selection = TextSelection.fromPosition(TextPosition(offset: controller.text.length));
           return TextField(
             controller: controller,
-            onChanged: (description) => EasyDebounce.debounce('collection_add_description', const Duration(milliseconds: 500), () => context.read<CollectionAddBloc>().add(DescriptionChanged(description))),
+            onChanged: (description) => EasyDebounce.debounce('collection_add_description', const Duration(milliseconds: 300), () => context.read<CollectionAddBloc>().add(DescriptionChanged(description))),
             decoration: InputDecoration(
                 labelText: 'Description',
                 hintText: 'A brief description',

@@ -157,7 +157,7 @@ class _QueryInput extends StatelessWidget{
         buildWhen: (previous, current) => previous.query != current.query,
         builder: (context, state) {
           return TextField(
-            onChanged: (query) => EasyDebounce.debounce('user_search_query', const Duration(milliseconds: 500), () => context.read<UserSearchBloc>().add(QueryChanged(query))),
+            onChanged: (query) => EasyDebounce.debounce('user_search_query', const Duration(milliseconds: 300), () => context.read<UserSearchBloc>().add(QueryChanged(query))),
             decoration: InputDecoration(
                 hintText: 'Search by username',
                 errorText: _getError(state.query.error)

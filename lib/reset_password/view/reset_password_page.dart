@@ -85,14 +85,18 @@ class ResetPasswordPage extends StatelessWidget {
               alignment: Alignment.bottomCenter,
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                child: BlocBuilder<ResetPasswordBloc, ResetPasswordState>(
-                  buildWhen: (previous, current) => previous.status != current.status,
-                  builder: (context, state) {
-                    return SubmitButton(
-                      text: 'Reset Password',
-                      onTap: state.status.isValidated && !state.status.isSubmissionInProgress ? () => context.read<ResetPasswordBloc>().add(const Submitted()) : null,
-                    );
-                  },
+                child: Row(
+                  children: [
+                    BlocBuilder<ResetPasswordBloc, ResetPasswordState>(
+                      buildWhen: (previous, current) => previous.status != current.status,
+                      builder: (context, state) {
+                        return SubmitButton(
+                          text: 'Reset Password',
+                          onTap: state.status.isValidated && !state.status.isSubmissionInProgress ? () => context.read<ResetPasswordBloc>().add(const Submitted()) : null,
+                        );
+                      },
+                    ),
+                  ],
                 )
               )
             )
@@ -113,7 +117,7 @@ class _EmailInput extends StatelessWidget {
         controller.selection = TextSelection.fromPosition(TextPosition(offset: controller.text.length));
         return TextField(
         controller: controller,
-          onChanged: (email) => EasyDebounce.debounce('reset_password_email', const Duration(milliseconds: 500), () => context.read<ResetPasswordBloc>().add(EmailChanged(email))),
+          onChanged: (email) => EasyDebounce.debounce('reset_password_email', const Duration(milliseconds: 300), () => context.read<ResetPasswordBloc>().add(EmailChanged(email))),
           decoration: InputDecoration(
               labelText: 'email',
               errorText: _getError(state.email.error)
@@ -146,7 +150,7 @@ class _CodeInput extends StatelessWidget {
       buildWhen: (previous, current) => previous.code != current.code,
       builder: (context, state) {
         return TextField(
-          onChanged: (code) => EasyDebounce.debounce('reset_password_code', const Duration(milliseconds: 500), () => context.read<ResetPasswordBloc>().add(CodeChanged(code))),
+          onChanged: (code) => EasyDebounce.debounce('reset_password_code', const Duration(milliseconds: 300), () => context.read<ResetPasswordBloc>().add(CodeChanged(code))),
           decoration: InputDecoration(
             labelText: 'reset code',
             errorText: _getError(state.code.error)
@@ -177,7 +181,7 @@ class _PasswordInput extends StatelessWidget {
       buildWhen: (previous, current) => previous.password != current.password,
       builder: (context, state) {
         return TextField(
-          onChanged: (password) => EasyDebounce.debounce('reset_password_password', const Duration(milliseconds: 500), () => context.read<ResetPasswordBloc>().add(PasswordChanged(password))),
+          onChanged: (password) => EasyDebounce.debounce('reset_password_password', const Duration(milliseconds: 300), () => context.read<ResetPasswordBloc>().add(PasswordChanged(password))),
           decoration: InputDecoration(
               labelText: 'password',
               errorText: _getError(state.password.error)
@@ -195,7 +199,7 @@ class _PasswordInput extends StatelessWidget {
         case PasswordValidationError.empty:
           return 'password required';
         case PasswordValidationError.length:
-          return '40 chars max';
+          return 'requires 6 - 40 chars';
       }
     }
     return null;

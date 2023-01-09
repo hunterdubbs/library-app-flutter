@@ -132,7 +132,7 @@ class _IsbnInput extends StatelessWidget {
           controller.selection = TextSelection.fromPosition(TextPosition(offset: controller.text.length));
           return TextField(
             controller: controller,
-            onChanged: (isbn) => EasyDebounce.debounce('isbn_lookup_isbn', const Duration(milliseconds: 500), () => context.read<IsbnLookupBloc>().add(IsbnChanged(isbn))),
+            onChanged: (isbn) => EasyDebounce.debounce('isbn_lookup_isbn', const Duration(milliseconds: 300), () => context.read<IsbnLookupBloc>().add(IsbnChanged(isbn))),
             decoration: InputDecoration(
                 labelText: 'ISBN',
                 hintText: 'ISBN-10 / ISBN-13 no spaces or hyphens',

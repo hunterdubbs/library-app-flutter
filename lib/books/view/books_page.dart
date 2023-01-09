@@ -97,7 +97,7 @@ class BooksPage extends StatelessWidget {
                       Expanded(
                         child: TextField(
                           controller: searchController,
-                          onChanged: (query) => EasyDebounce.debounce('book_search_query', const Duration(milliseconds: 500), () => context.read<BooksBloc>().add(QueryTextChanged(query))),
+                          onChanged: (query) => EasyDebounce.debounce('book_search_query', const Duration(milliseconds: 300), () => context.read<BooksBloc>().add(QueryTextChanged(query))),
                           decoration: const InputDecoration(
                             hintText: 'Search'
                           ),

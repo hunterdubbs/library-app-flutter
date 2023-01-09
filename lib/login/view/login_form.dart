@@ -52,7 +52,7 @@ class _UsernameInput extends StatelessWidget {
       builder: (context, state) {
         return TextField(
           key: const Key('loginForm_usernameInput_textField'),
-          onChanged: (username) => EasyDebounce.debounce('login_username', const Duration(milliseconds: 500), () => context.read<LoginBloc>().add(LoginUsernameChanged(username))),
+          onChanged: (username) => EasyDebounce.debounce('login_username', const Duration(milliseconds: 300), () => context.read<LoginBloc>().add(LoginUsernameChanged(username))),
           decoration: InputDecoration(
             labelText: 'username',
             errorText: state.username.invalid ? 'invalid username' : null
@@ -71,7 +71,7 @@ class _PasswordInput extends StatelessWidget {
       builder: (context, state) {
         return TextField(
           key: const Key('loginForm_passwordInput_textField'),
-          onChanged: (password) => EasyDebounce.debounce('login_password', const Duration(milliseconds: 500), () => context.read<LoginBloc>().add(LoginPasswordChanged(password))),
+          onChanged: (password) => EasyDebounce.debounce('login_password', const Duration(milliseconds: 300), () => context.read<LoginBloc>().add(LoginPasswordChanged(password))),
           obscureText: true,
           decoration: InputDecoration(
             labelText: 'password',

@@ -116,7 +116,7 @@ class _UsernameInput extends StatelessWidget {
       buildWhen: (previous, current) => previous.username != current.username,
       builder: (context, state) {
         return TextField(
-          onChanged: (username) => EasyDebounce.debounce('register_username', const Duration(milliseconds: 500), () => context.read<RegisterBloc>().add(UsernameChanged(username))),
+          onChanged: (username) => EasyDebounce.debounce('register_username', const Duration(milliseconds: 300), () => context.read<RegisterBloc>().add(UsernameChanged(username))),
           decoration: InputDecoration(
             labelText: 'username',
             errorText: _getError(state.username.error)
@@ -149,7 +149,7 @@ class _EmailInput extends StatelessWidget {
       buildWhen: (previous, current) => previous.email != current.email,
       builder: (context, state) {
         return TextField(
-          onChanged: (email) => EasyDebounce.debounce('register_email', const Duration(milliseconds: 500), () => context.read<RegisterBloc>().add(EmailChanged(email))),
+          onChanged: (email) => EasyDebounce.debounce('register_email', const Duration(milliseconds: 300), () => context.read<RegisterBloc>().add(EmailChanged(email))),
           decoration: InputDecoration(
               labelText: 'email',
               errorText: _getError(state.email.error)
@@ -182,7 +182,7 @@ class _PasswordInput extends StatelessWidget {
       buildWhen: (previous, current) => previous.password != current.password,
       builder: (context, state) {
         return TextField(
-          onChanged: (password) => EasyDebounce.debounce('register_password', const Duration(milliseconds: 500), () => context.read<RegisterBloc>().add(PasswordChanged(password))),
+          onChanged: (password) => EasyDebounce.debounce('register_password', const Duration(milliseconds: 300), () => context.read<RegisterBloc>().add(PasswordChanged(password))),
           decoration: InputDecoration(
               labelText: 'password',
               errorText: _getError(state.password.error)

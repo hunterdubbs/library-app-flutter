@@ -91,7 +91,7 @@ class _NameInput extends StatelessWidget {
       buildWhen: (previous, current) => previous.name != current.name,
       builder: (context, state) {
         return TextField(
-          onChanged: (name) => EasyDebounce.debounce('library_add_name', const Duration(milliseconds: 500), () => context.read<LibraryAddBloc>().add(NameChanged(name))),
+          onChanged: (name) => EasyDebounce.debounce('library_add_name', const Duration(milliseconds: 300), () => context.read<LibraryAddBloc>().add(NameChanged(name))),
           decoration: InputDecoration(
             labelText: 'Name',
             hintText: 'Your library name',

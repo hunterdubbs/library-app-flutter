@@ -121,7 +121,7 @@ class _EmailInput extends StatelessWidget {
       buildWhen: (previous, current) => previous.email != current.email,
       builder: (context, state) {
         return TextField(
-          onChanged: (email) => EasyDebounce.debounce('request_password_reset_email', const Duration(milliseconds: 500), () => context.read<RequestPasswordResetBloc>().add(EmailChanged(email))),
+          onChanged: (email) => EasyDebounce.debounce('request_password_reset_email', const Duration(milliseconds: 300), () => context.read<RequestPasswordResetBloc>().add(EmailChanged(email))),
           decoration: InputDecoration(
               labelText: 'email',
               errorText: _getError(state.email.error)

@@ -97,7 +97,7 @@ class _NameInput extends StatelessWidget {
         buildWhen: (previous, current) => previous.name != current.name,
         builder: (context, state) {
           return TextField(
-            onChanged: (name) => EasyDebounce.debounce('tag_add_name', const Duration(milliseconds: 500), () => context.read<TagAddBloc>().add(NameChanged(name))),
+            onChanged: (name) => EasyDebounce.debounce('tag_add_name', const Duration(milliseconds: 300), () => context.read<TagAddBloc>().add(NameChanged(name))),
             decoration: InputDecoration(
                 labelText: 'Tag Name',
                 errorText: _getError(state.name.error)

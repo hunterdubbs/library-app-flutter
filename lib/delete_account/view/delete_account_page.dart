@@ -145,7 +145,7 @@ class _PasswordInput extends StatelessWidget {
       buildWhen: (previous, current) => previous.password != current.password,
       builder: (context, state) {
         return TextField(
-          onChanged: (password) => EasyDebounce.debounce('delete_account_password', const Duration(milliseconds: 500), () => context.read<DeleteAccountBloc>().add(PasswordChanged(password))),
+          onChanged: (password) => EasyDebounce.debounce('delete_account_password', const Duration(milliseconds: 300), () => context.read<DeleteAccountBloc>().add(PasswordChanged(password))),
           decoration: InputDecoration(
               labelText: 'password',
               errorText: _getError(state.password.error)
