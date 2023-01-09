@@ -82,7 +82,7 @@ class BookAddBloc extends Bloc<BookAddEvent, BookAddState> {
     final datePublished = DatePublished.dirty(event.datePublished);
     emit(state.copyWith(
       datePublished: datePublished,
-      status: Formz.validate([datePublished, state.title, state.synopsis])
+      status: Formz.validate([datePublished, state.title, state.synopsis, state.series, state.volume])
     ));
   }
 
