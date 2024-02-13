@@ -47,7 +47,7 @@ class BookDetailsPage extends StatelessWidget {
                       ),
                     ),
                     Text(state.book.authors.join(', ')),
-                    Text('${state.book.series} - Vol. ${state.book.volume}',
+                    if(state.book.series.isNotEmpty || state.book.volume.isNotEmpty) Text('${state.book.series}${state.book.volume.isNotEmpty ? ' - Vol. ' : ''}${state.book.volume}',
                         style: const TextStyle(
                             fontStyle: FontStyle.italic
                         )),

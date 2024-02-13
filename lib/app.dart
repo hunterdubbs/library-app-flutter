@@ -5,6 +5,7 @@ import 'package:library_app/data/library_api.dart';
 import 'package:library_app/home/view/home_page.dart';
 import 'package:library_app/login/view/login_page.dart';
 import 'package:library_app/repositories/auth_repository.dart';
+import 'package:library_app/repositories/prefs_repository.dart';
 import 'package:library_app/splash/view/splash_page.dart';
 
 import 'authentication/bloc/authentication_bloc.dart';
@@ -14,12 +15,14 @@ class App extends StatelessWidget {
     Key? key,
     required this.authRepository,
     required this.authenticationApi,
-    required this.libraryApi
+    required this.libraryApi,
+    required this.prefsRepository
 }) : super(key: key);
 
   final AuthRepository authRepository;
   final AuthenticationApi authenticationApi;
   final LibraryApi libraryApi;
+  final PrefsRepository prefsRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +31,7 @@ class App extends StatelessWidget {
         RepositoryProvider.value(value: authRepository),
         RepositoryProvider.value(value: authenticationApi),
         RepositoryProvider.value(value: libraryApi),
+        RepositoryProvider.value(value: prefsRepository)
       ],
       child: BlocProvider(
         create: (_) => AuthenticationBloc(

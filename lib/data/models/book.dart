@@ -13,7 +13,8 @@ class Book extends Equatable {
     required this.authors,
     required this.tags,
     required this.series,
-    required this.volume
+    required this.volume,
+    required this.isGroup
   });
 
   final int id;
@@ -26,6 +27,7 @@ class Book extends Equatable {
   final List<Tag> tags;
   final String series;
   final String volume;
+  final bool isGroup;
 
   Book.fromJson(Map json) :
     id = json['id'],
@@ -37,7 +39,8 @@ class Book extends Equatable {
     authors = List<Author>.from(json['authors'].map((i) => Author.fromJson(i))).toList(),
     tags = List<Tag>.from(json['tags'].map((i) => Tag.fromJson(i))).toList(),
     series = json['series'],
-    volume = json['volume'];
+    volume = json['volume'],
+    isGroup = false;
 
   toJson() => {
     'ID': id,
@@ -49,9 +52,9 @@ class Book extends Equatable {
     'Authors': authors.map((i) => i.toJson()),
     'Tags': tags.map((i) => i.toJson()),
     'Series': series,
-    'Volume': volume
+    'Volume': volume,
   };
 
   @override
-  List<Object> get props => [id, libraryId, title, synopsis, addedDate, publishedDate, authors, tags, series, volume];
+  List<Object> get props => [id, libraryId, title, synopsis, addedDate, publishedDate, authors, tags, series, volume, isGroup];
 }

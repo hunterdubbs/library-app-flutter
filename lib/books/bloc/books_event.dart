@@ -46,3 +46,20 @@ class SortTypeChanged extends BooksEvent {
   @override
   List<Object> get props => [sortType];
 }
+
+class QueryEditorVisibilityChanged extends BooksEvent {
+  const QueryEditorVisibilityChanged(this.editorVisible);
+
+  final bool editorVisible;
+
+  @override
+  List<Object> get props => [editorVisible];
+}
+
+class ToggleQueryEditorVisible extends BooksEvent {
+  const ToggleQueryEditorVisible();
+}
+
+class ToggleSeriesGroup extends BooksEvent {
+  const ToggleSeriesGroup();
+}

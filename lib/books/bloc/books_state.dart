@@ -12,8 +12,11 @@ class BooksState extends Equatable {
     this.query = const Query(
       searchTerm: '',
       queryType: QueryType.title,
-      sortType: SortType.dateAddedNewest
-    )
+      sortType: SortType.dateAddedNewest,
+      editorVisible: false
+    ),
+    this.groupSeries = false,
+    this.isGroupable = true
   });
 
   final List<Book> books;
@@ -22,6 +25,8 @@ class BooksState extends Equatable {
   final Collection collection;
   final String errorMsg;
   final Query query;
+  final bool groupSeries;
+  final bool isGroupable;
 
   BooksState copyWith({
     List<Book>? books,
@@ -29,7 +34,9 @@ class BooksState extends Equatable {
     Library? library,
     Collection? collection,
     String? errorMsg,
-    Query? query
+    Query? query,
+    bool? groupSeries,
+    bool? isGroupable
   }) {
     return BooksState(
       books: books ?? this.books,
@@ -37,12 +44,33 @@ class BooksState extends Equatable {
       library: library ?? this.library,
       collection: collection ?? this.collection,
       errorMsg: errorMsg ?? this.errorMsg,
-      query: query ?? this.query
+      query: query ?? this.query,
+      groupSeries: groupSeries ?? this.groupSeries,
+      isGroupable: isGroupable ?? this.isGroupable
     );
   }
 
   List<Book> get filteredBooks {
-    var filteredBooks = books;
+    var filteredBooks = <Book>[];
+    if(groupSeries){
+      filteredBooks.addAll(books.where((book) => book.series == ''));
+      filteredBooks.addAll(books.where((book) => book.series != '').groupBy((book) => book.series).select((books, index) => Book(
+          id: books.first.id,
+          libraryId: books.first.libraryId,
+          title: books.key,
+          authors: books.selectMany((books, index) => books.authors).distinct().toList(),
+          tags: books.selectMany((books, index) => books.tags).distinct().toList(),
+          addedDate: books.select((books, index) => books.addedDate).min(),
+          publishedDate: books.select((books, index) => books.publishedDate).min(),
+          synopsis: '',
+          series: '${books.count} Volumes',
+          volume: '',
+          isGroup: true
+      )));
+    }else{
+      filteredBooks = books;
+    }
+
     if(query.searchTerm.isNotEmpty){
       final normalizedSearchTerm = query.searchTerm.toLowerCase().trim();
       switch(query.queryType){
@@ -70,5 +98,5 @@ class BooksState extends Equatable {
   }
 
   @override
-  List<Object> get props => [books, status, library, collection, errorMsg, query];
+  List<Object> get props => [books, status, library, collection, errorMsg, query, groupSeries, isGroupable];
 }

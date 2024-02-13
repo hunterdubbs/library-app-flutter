@@ -56,7 +56,7 @@ class BookTile extends StatelessWidget {
                                   fontSize: 12
                               )
                           ),
-                          if(book.series.isNotEmpty || book.volume.isNotEmpty) Text('${book.series} - Vol. ${book.volume}',
+                          if(book.series.isNotEmpty || book.volume.isNotEmpty) Text('${book.series}${book.volume.isNotEmpty ? ' - Vol. ' : ''}${book.volume}',
                             style: const TextStyle(
                                 fontSize: 12
                             )
@@ -71,7 +71,7 @@ class BookTile extends StatelessWidget {
                       ),
                     ),
                   ),
-                  if(library.permissions > 1) PopupMenuButton(
+                  if(library.permissions > 1 && !book.isGroup) PopupMenuButton(
                     itemBuilder: (BuildContext context) => <PopupMenuEntry<BookMenu>>[
                       if(library.permissions > 1) PopupMenuItem<BookMenu>(
                         value: BookMenu.collections,
@@ -87,7 +87,7 @@ class BookTile extends StatelessWidget {
                           ],
                         ),
                       ),
-                      if(library.permissions > 1) PopupMenuItem<BookMenu>(
+                      if(library.permissions > 1 && !book.isGroup) PopupMenuItem<BookMenu>(
                         value: BookMenu.edit,
                         child: Row(
                           children: const [
@@ -101,7 +101,7 @@ class BookTile extends StatelessWidget {
                           ],
                         ),
                       ),
-                      if(library.permissions > 1) PopupMenuItem<BookMenu>(
+                      if(library.permissions > 1 && !book.isGroup) PopupMenuItem<BookMenu>(
                         value: BookMenu.delete,
                         child: Row(
                           children: const [

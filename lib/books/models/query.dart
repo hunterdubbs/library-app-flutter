@@ -7,27 +7,31 @@ class Query extends Equatable {
   const Query({
     required this.searchTerm,
     required this.queryType,
-    required this.sortType
+    required this.sortType,
+    required this.editorVisible
   });
 
   final String searchTerm;
   final QueryType queryType;
   final SortType sortType;
+  final bool editorVisible;
 
   Query copyWith({
     String? searchTerm,
     QueryType? queryType,
-    SortType? sortType
+    SortType? sortType,
+    bool? editorVisible
   }) {
     return Query(
       searchTerm: searchTerm ?? this.searchTerm,
       queryType: queryType ?? this.queryType,
-      sortType: sortType ?? this.sortType
+      sortType: sortType ?? this.sortType,
+      editorVisible: editorVisible ?? this.editorVisible
     );
   }
 
   @override
-  List<Object> get props => [searchTerm, queryType, sortType];
+  List<Object> get props => [searchTerm, queryType, sortType, editorVisible];
 }
 
 class QueryMappings {
